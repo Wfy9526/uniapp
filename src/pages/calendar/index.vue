@@ -116,7 +116,7 @@
                                 :key="item.name"
                                 :text="item.name"
                                 :type="item.buttonType"
-                                @click="addTag(i)"
+                                @click="addTag(labelMenuData, label, menu, i)"
                             />
                         </template>
                     </uni-group>
@@ -222,7 +222,10 @@ export default Vue.extend({
         addMenu(type) {
             this.$refs.popup.open('top');
         },
-        addTag(type) {},
+        addTag(obj, label, arr, i) {
+            arr[i].buttonType = arr[i].buttonType ? '' : 'primary';
+            this.$set(this.labelMenuData, label, arr);
+        },
 
         deleteMenu(data, i) {
             data.splice(i, 1);
@@ -245,6 +248,7 @@ export default Vue.extend({
             if (!this.labelMenuData[menu.label]) {
                 this.labelMenuData[menu.label] = [];
             }
+            menu.buttonType = '';
             this.labelMenuData[menu.label].push(menu);
         });
     },
