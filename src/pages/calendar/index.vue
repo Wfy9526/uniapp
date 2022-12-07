@@ -36,21 +36,26 @@
             >
                 <scroll-view scroll-y style="height: 100%">
                     <uni-group title="早餐">
-                        <view class="tag" v-for="(breakfast, i) in item.breakfastData" :key="i">
-                            <text>{{ breakfast }}</text>
-                            <icon
-                                class="del-icon"
-                                type="cancel"
-                                size="16"
-                                @click="deleteMenu(item.breakfastData, i)"
-                            ></icon>
+                        <view class="tag-container">
+                            <view class="tag" v-for="(breakfast, i) in item.breakfastData" :key="i">
+                                <text>{{ breakfast }}</text>
+                                <icon
+                                    class="del-icon"
+                                    type="cancel"
+                                    size="16"
+                                    @click="deleteMenu(item.breakfastData, i)"
+                                ></icon>
+                            </view>
+                            <view>
+                                <uni-icons
+                                    type="plus-filled"
+                                    size="30"
+                                    @click="addMenu('breakfast')"
+                                ></uni-icons
+                                >添加菜谱
+                            </view>
                         </view>
-                        <uni-icons
-                            type="plus-filled"
-                            size="30"
-                            @click="addMenu('breakfast')"
-                        ></uni-icons
-                        >添加菜谱
+
                         <textarea
                             class="nav_item"
                             v-model="item.breakfastText"
@@ -59,21 +64,26 @@
                         </textarea>
                     </uni-group>
                     <uni-group title="中餐">
-                        <view class="tag" v-for="(lunch, i) in item.lunchData" :key="i">
-                            <text>{{ lunch }}</text>
-                            <icon
-                                class="del-icon"
-                                type="cancel"
-                                size="16"
-                                @click="deleteMenu(item.lunchData, i)"
-                            ></icon>
+                        <view class="tag-container">
+                            <view class="tag" v-for="(lunch, i) in item.lunchData" :key="i">
+                                <view>{{ lunch }}</view>
+                                <icon
+                                    class="del-icon"
+                                    type="cancel"
+                                    size="16"
+                                    @click="deleteMenu(item.lunchData, i)"
+                                ></icon>
+                            </view>
+                            <view>
+                                <uni-icons
+                                    type="plus-filled"
+                                    size="30"
+                                    @click="addMenu('lunch')"
+                                ></uni-icons
+                                >添加菜谱
+                            </view>
                         </view>
-                        <uni-icons
-                            type="plus-filled"
-                            size="30"
-                            @click="addMenu('lunch')"
-                        ></uni-icons
-                        >添加菜谱
+
                         <textarea
                             class="nav_item"
                             v-model="item.lunchText"
@@ -82,21 +92,25 @@
                         </textarea>
                     </uni-group>
                     <uni-group title="晚餐">
-                        <view class="tag" v-for="(supper, i) in item.supperData" :key="i">
-                            <text>{{ supper }}</text>
-                            <icon
-                                class="del-icon"
-                                type="cancel"
-                                size="16"
-                                @click="deleteMenu(item.supperData, i)"
-                            ></icon>
+                        <view class="tag-container">
+                            <view class="tag" v-for="(supper, i) in item.supperData" :key="i">
+                                <view>{{ supper }}</view>
+                                <icon
+                                    class="del-icon"
+                                    type="cancel"
+                                    size="16"
+                                    @click="deleteMenu(item.supperData, i)"
+                                ></icon>
+                            </view>
                         </view>
-                        <uni-icons
-                            type="plus-filled"
-                            size="30"
-                            @click="addMenu('supper')"
-                        ></uni-icons
-                        >添加菜谱
+                        <view>
+                            <uni-icons
+                                type="plus-filled"
+                                size="30"
+                                @click="addMenu('supper')"
+                            ></uni-icons
+                            >添加菜谱
+                        </view>
                         <textarea
                             class="nav_item"
                             v-model="item.supperText"
@@ -116,7 +130,7 @@
                                 :key="item.name"
                                 :text="item.name"
                                 :type="item.buttonType"
-                                @click="addTag(labelMenuData, label, menu, i)"
+                                @click="addTag(menu, i)"
                             />
                         </template>
                     </uni-group>
@@ -222,9 +236,9 @@ export default Vue.extend({
         addMenu(type) {
             this.$refs.popup.open('top');
         },
-        addTag(obj, label, arr, i) {
+        addTag(arr, i) {
             arr[i].buttonType = arr[i].buttonType ? '' : 'primary';
-            this.$set(this.labelMenuData, label, arr);
+            this.labelMenuData = { ...this.labelMenuData };
         },
 
         deleteMenu(data, i) {
@@ -243,6 +257,7 @@ export default Vue.extend({
     onReady() {},
     // 页面周期函数--监听页面显示(not-nvue)
     onShow() {
+        this.labelMenuData = {};
         // eslint-disable-next-line no-undef
         getApp().globalData.menuData.forEach((menu) => {
             if (!this.labelMenuData[menu.label]) {
@@ -267,26 +282,16 @@ export default Vue.extend({
 });
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .calendar {
-    display: flex;
-    flex-direction: column;
     width: 100%;
-    flex: 1;
     .nav {
         border-top: 1rpx solid #f2f2f2;
         background-color: #fceeee;
-        position: fixed;
-        z-index: 99;
-        width: 100%;
-        align-items: center;
         height: 100rpx;
+        line-height: 100rpx;
         .tab-scroll {
-            flex: 1;
-            overflow: hidden;
-            box-sizing: border-box;
-            padding-left: 30rpx;
-            padding-right: 30rpx;
+            white-space: nowrap;
             .tab-scroll_box {
                 display: flex;
                 align-items: center;
@@ -294,20 +299,16 @@ export default Vue.extend({
                 box-sizing: border-box;
                 .tab-scroll_item {
                     line-height: 60rpx;
-                    margin-right: 35rpx;
                     flex-shrink: 0;
-                    padding-bottom: 10px;
                     display: flex;
                     justify-content: center;
                     font-size: 16px;
-                    padding-top: 10px;
+                    padding: 10rpx 30rpx;
                 }
             }
         }
     }
     .swiper-content {
-        padding-top: 120rpx;
-        flex: 1;
         .swiperitem-content {
             background-color: #ffffff;
             .nav_item {
@@ -316,25 +317,18 @@ export default Vue.extend({
             }
         }
     }
-    /* 隐藏滚动条，但依旧具备可以滚动的功能 */
-    .uni-scroll-view::-webkit-scrollbar {
-        display: none !important;
+    .active {
+        position: relative;
+        color: #ff0000;
+        font-weight: 600;
     }
-}
-.active {
-    position: relative;
-    color: #ff0000;
-    font-weight: 600;
-}
-.active::after {
-    content: '';
-    position: absolute;
-    width: 130rpx;
-    height: 4rpx;
-    background-color: #ff0000;
-    left: 0px;
-    right: 0px;
-    bottom: 0px;
-    margin: auto;
+    .tag-container {
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        .tag {
+            margin: 10rpx 20rpx;
+        }
+    }
 }
 </style>

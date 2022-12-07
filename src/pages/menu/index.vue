@@ -1,20 +1,24 @@
 <template>
     <view class="menu">
-        <view>
+        <view class="header">
             <uni-icons type="fire-filled"></uni-icons>
             <uni-title type="h3" title="热门分类"></uni-title>
         </view>
 
         <uni-grid :column="4" :show-border="false" :square="false">
             <uni-grid-item v-for="(item, index) in labelData" :key="index">
-                <image :src="item.image" mode="aspectFill"></image>
-                <text>{{ item.name }}</text>
+                <view class="grid-item-box">
+                    <image :src="item.image" class="grid-image"></image>
+                    <view>{{ item.name }}</view>
+                </view>
             </uni-grid-item>
         </uni-grid>
         <uni-grid :column="2" :show-border="false" :square="false">
             <uni-grid-item v-for="(item, index) in menuData" :key="index">
-                <image :src="item.image" mode="aspectFill"></image>
-                <text>{{ item.name }}</text>
+                <view class="grid-item-box">
+                    <image :src="item.image" class="grid-image2"></image>
+                    <view>{{ item.name }}</view>
+                </view>
             </uni-grid-item>
         </uni-grid>
         <uni-fab
@@ -86,4 +90,25 @@ export default Vue.extend({
 });
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.menu {
+    .header {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 0 20rpx;
+    }
+    .grid-item-box {
+        padding: 10rpx 20rpx;
+        text-align: center;
+        .grid-image {
+            width: 100%;
+            height: 150rpx;
+        }
+        .grid-image2 {
+            width: 100%;
+            height: 250rpx;
+        }
+    }
+}
+</style>

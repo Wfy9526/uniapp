@@ -57,16 +57,16 @@
 				"text": "食材"
 			},
 			{
-				"pagePath": "pages/calendar/index",
-				"iconPath": "",
-				"selectedIconPath": "",
-				"text": "日历"
-			},
-			{
 				"pagePath": "pages/menu/index",
 				"iconPath": "",
 				"selectedIconPath": "",
 				"text": "菜谱"
+			},
+			{
+				"pagePath": "pages/calendar/index",
+				"iconPath": "",
+				"selectedIconPath": "",
+				"text": "日历"
 			},
 			{
 				"pagePath": "pages/person/index",

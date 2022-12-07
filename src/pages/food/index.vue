@@ -2,17 +2,19 @@
     <view class="food">
         <uni-title type="h2" title="冰箱里有什么？" align="center"></uni-title>
         <view class="vegetable">
-            <view class="small-title">蔬菜</view>
-            <scroll-view>
+            <uni-title type="h4" title="蔬菜" align="center"></uni-title>
+            <scroll-view scroll-y="true">
                 <template v-if="vegetableData.length">
-                    <view class="tag" v-for="(item, i) in vegetableData" :key="item">
-                        <text>{{ item }}</text>
-                        <icon
-                            class="del-icon"
-                            type="cancel"
-                            size="16"
-                            @click="deleteVegetable(i)"
-                        ></icon>
+                    <view class="tag-container">
+                        <view class="tag" v-for="(item, i) in vegetableData" :key="item">
+                            <text>{{ item }}</text>
+                            <icon
+                                class="del-icon"
+                                type="cancel"
+                                size="16"
+                                @click="deleteVegetable(i)"
+                            ></icon>
+                        </view>
                     </view>
                 </template>
             </scroll-view>
@@ -28,18 +30,20 @@
             <button @click="addVegetableMode">添加蔬菜</button>
         </view>
         <view class="meat">
-            <view class="small-title">肉类</view>
-            <scroll-view>
+            <uni-title type="h4" title="肉类" align="center"></uni-title>
+            <scroll-view scroll-y="true">
                 <template v-if="meatData.length">
-                    <view class="tag" v-for="(item, i) in meatData" :key="item">
-                        <text>{{ item }}</text>
+                    <view class="tag-container">
+                        <view class="tag" v-for="(item, i) in meatData" :key="item">
+                            <text>{{ item }}</text>
 
-                        <icon
-                            class="del-icon"
-                            type="cancel"
-                            size="16"
-                            @click="deleteMeat(i)"
-                        ></icon>
+                            <icon
+                                class="del-icon"
+                                type="cancel"
+                                size="16"
+                                @click="deleteMeat(i)"
+                            ></icon>
+                        </view>
                     </view>
                 </template>
             </scroll-view>
@@ -54,6 +58,7 @@
             </view>
             <button @click="addMeatMode">添加肉类</button>
         </view>
+        <uni-title type="h4" title="备忘录" align="center"></uni-title>
         <textarea class="nav_item" v-model="remark" placeholder="备注..."> </textarea>
     </view>
 </template>
@@ -141,7 +146,12 @@ export default Vue.extend({
 </script>
 
 <style lang="scss" scoped>
-.demo-uni-row {
-    margin-bottom: 10px;
+.tag-container {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    .tag {
+        margin: 10rpx 20rpx;
+    }
 }
 </style>
