@@ -1,18 +1,63 @@
 <template>
-    <div class="menu">menu</div>
+    <view class="menu">
+        <view>
+            <uni-icons type="fire-filled"></uni-icons>
+            <uni-title type="h3" title="热门分类"></uni-title>
+        </view>
+
+        <uni-grid :column="4" :show-border="false" :square="false">
+            <uni-grid-item v-for="(item, index) in labelData" :key="index">
+                <image :src="item.image" mode="aspectFill"></image>
+                <text>{{ item.name }}</text>
+            </uni-grid-item>
+        </uni-grid>
+        <uni-grid :column="2" :show-border="false" :square="false">
+            <uni-grid-item v-for="(item, index) in menuData" :key="index">
+                <image :src="item.image" mode="aspectFill"></image>
+                <text>{{ item.name }}</text>
+            </uni-grid-item>
+        </uni-grid>
+        <uni-fab
+            ref="fab"
+            :pattern="pattern"
+            :horizontal="horizontal"
+            :vertical="vertical"
+            :direction="direction"
+            @fabClick="fabClick"
+        />
+    </view>
 </template>
 
-<script lang="ts">
+<script>
 import Vue from 'vue';
 export default Vue.extend({
     name: 'menu',
     components: {},
     props: {},
     data() {
-        return {};
+        return {
+            horizontal: 'right',
+            vertical: 'bottom',
+            direction: 'horizontal',
+            pattern: {
+                color: '#7A7E83',
+                backgroundColor: '#fff',
+                selectedColor: '#007AFF',
+                buttonColor: '#007AFF',
+                iconColor: '#fff',
+            },
+            labelData: [],
+            menuData: [],
+        };
     },
     computed: {},
-    methods: {},
+    methods: {
+        fabClick() {
+            uni.navigateTo({
+                url: '../add-menu/index',
+            });
+        },
+    },
     watch: {},
 
     // 页面周期函数--监听页面加载
@@ -20,7 +65,12 @@ export default Vue.extend({
     // 页面周期函数--监听页面初次渲染完成
     onReady() {},
     // 页面周期函数--监听页面显示(not-nvue)
-    onShow() {},
+    onShow() {
+        // eslint-disable-next-line no-undef
+        this.labelData = getApp().globalData.labelData;
+        // eslint-disable-next-line no-undef
+        this.menuData = getApp().globalData.menuData;
+    },
     // 页面周期函数--监听页面隐藏
     onHide() {},
     // 页面周期函数--监听页面卸载

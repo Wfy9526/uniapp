@@ -1,23 +1,12 @@
 <template>
     <view class="food">
-        <view class="search-bar">
-            <uni-search-bar
-                placeholder="请输入菜谱"
-                cancelButton="none"
-                :radius="100"
-                @confirm="search"
-                :focus="true"
-                v-model="searchValue"
-                @clear="clear"
-            ></uni-search-bar>
-        </view>
-        <view class="title">冰箱里有什么？</view>
+        <uni-title type="h2" title="冰箱里有什么？" align="center"></uni-title>
         <view class="vegetable">
             <view class="small-title">蔬菜</view>
             <scroll-view>
                 <template v-if="vegetableData.length">
                     <view class="tag" v-for="(item, i) in vegetableData" :key="item">
-                        {{ item }}
+                        <text>{{ item }}</text>
                         <icon
                             class="del-icon"
                             type="cancel"
@@ -43,7 +32,8 @@
             <scroll-view>
                 <template v-if="meatData.length">
                     <view class="tag" v-for="(item, i) in meatData" :key="item">
-                        {{ item }}
+                        <text>{{ item }}</text>
+
                         <icon
                             class="del-icon"
                             type="cancel"
@@ -64,6 +54,7 @@
             </view>
             <button @click="addMeatMode">添加肉类</button>
         </view>
+        <textarea class="nav_item" v-model="remark" placeholder="备注..."> </textarea>
     </view>
 </template>
 
@@ -82,6 +73,7 @@ export default Vue.extend({
             searchValue: '',
             vegetableInputValue: '',
             meatInputValue: '',
+            remark: '',
             vegetableData: ['aaa', 'BBB', 'DDD'],
             meatData: ['ccc', 'rrr', 'fgg'],
         };

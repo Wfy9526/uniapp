@@ -23,6 +23,12 @@
 			"style": {
 				"navigationBarTitleText": "个人"
 			}
+		},
+		{
+			"path": "pages/add-menu/index",
+			"style": {
+				"navigationBarTitleText": "添加菜谱"
+			}
 		}
 	],
 	"globalStyle": {
