@@ -15,6 +15,7 @@ module.exports = {
     },
     globals: {
         wx: 'readonly',
+        uniCloud: 'readonly',
         uni: 'readonly',
     },
 };
