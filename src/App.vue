@@ -1,4 +1,5 @@
 <script>
+import uniIdPageInit from '@/uni_modules/uni-id-pages/init.js';
 export default {
     globalData: {
         labelData: [
@@ -47,8 +48,9 @@ export default {
             },
         ],
     },
-    onLaunch() {
+    async onLaunch() {
         console.log('App Launch');
+        await uniIdPageInit();
     },
     onShow() {
         console.log('App Show');
