@@ -4,19 +4,22 @@
 			"path": "pages/food/index",
 			"style": {
 				"navigationBarTitleText": "食材"
-			}
+			},
+			"needLogin": true
 		},
 		{
 			"path": "pages/calendar/index",
 			"style": {
 				"navigationBarTitleText": "日历"
-			}
+			},
+			"needLogin": true
 		},
 		{
 			"path": "pages/menu/index",
 			"style": {
 				"navigationBarTitleText": "菜单"
-			}
+			},
+			"needLogin": true
 		},
 		{
 			"path": "pages/person/index",
@@ -28,7 +31,8 @@
 			"path": "pages/add-menu/index",
 			"style": {
 				"navigationBarTitleText": "添加菜谱"
-			}
+			},
+			"needLogin": true
 		},
 		{
 			"path": "uni_modules/uni-id-pages/pages/userinfo/deactivate/deactivate",
@@ -135,13 +139,16 @@
 		"autoscan": true,
 		"custom": {}
 	},
+	"uniIdRouter": {
+		"loginPage": "uni_modules/uni-id-pages/pages/login/login-withpwd",
+		"resToLogin": true
+	},
 	"tabBar": {
 		"color": "#7A7E83",
 		"selectedColor": "#3cc51f",
 		"borderStyle": "black",
 		"backgroundColor": "#ffffff",
-		"list": [
-			{
+		"list": [{
 				"pagePath": "pages/food/index",
 				"iconPath": "",
 				"selectedIconPath": "",
