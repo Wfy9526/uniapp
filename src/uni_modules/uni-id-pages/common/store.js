@@ -143,11 +143,3 @@ import Vue from 'vue'
 // 通过Vue.observable创建一个可响应的对象
 export const store = Vue.observable(data)
 // #endif
-
-// #ifdef VUE3
-import {
-	reactive
-} from 'vue'
-// 通过Vue.observable创建一个可响应的对象
-export const store = reactive(data)
-// #endif

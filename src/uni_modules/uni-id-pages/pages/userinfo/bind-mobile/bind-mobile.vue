@@ -74,9 +74,6 @@
 						icon: 'none',
 						duration: 3000
 					});
-					// #ifdef APP-NVUE
-					const eventChannel = this.$scope.eventChannel; // 兼容APP-NVUE
-					// #endif
 					// #ifndef APP-NVUE
 					const eventChannel = this.getOpenerEventChannel();
 					// #endif

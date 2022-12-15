@@ -1,6 +1,6 @@
 export default {
 	//调试模式
-	"debug": false,
+	"debug": true,
 	/*
 		登录类型 未列举到的或运行环境不支持的，将被自动隐藏。
 		如果需要在不同平台有不同的配置，直接用条件编译即可
@@ -15,16 +15,8 @@ export default {
 		// "google",
 		// "alipay",
 		// "douyin",
-
-		// #ifdef APP
-		"univerify",
-		// #endif
-		"weixin",
 		"username",
-		// #ifdef APP
-		"apple",
-		// #endif
-		"smsCode"
+		"weixin",
 	],
 	//政策协议
 	"agreements": {
@@ -39,7 +31,7 @@ export default {
 	"appid": {
 		"weixin": {
 			// 微信公众号的appid，来源:登录微信公众号（https://mp.weixin.qq.com）-> 设置与开发 -> 基本配置 -> 公众号开发信息 -> AppID
-			"h5": "xxxxxx",
+			"h5": "wx84308807f79ac301",
 			// 微信开放平台的appid，来源:登录微信开放平台（https://open.weixin.qq.com） -> 管理中心 -> 网站应用 -> 选择对应的应用名称，点击查看 -> AppID
 			"web": "xxxxxx"
 		}
@@ -52,7 +44,7 @@ export default {
 	 * weak（弱：密码必须包含字母和数字，长度范围：6-16位之间）
 	 * 为空或false则不验证密码强度
 	 */
-	"passwordStrength":"medium",
+	"passwordStrength": "medium",
 	/**
 	 * 登录后允许用户设置密码（只针对未设置密码得用户）
 	 * 开启此功能将 setPasswordAfterLogin 设置为 true 即可
