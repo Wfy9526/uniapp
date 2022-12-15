@@ -96,7 +96,7 @@ export default Vue.extend({
             this.isShowAddMeat = false;
             uni.navigateTo({
                 // url: '/uni_modules/uni-id-pages/pages/login/login-smscode'
-                url: '/uni_modules/uni-id-pages/pages/login/login-withpwd'
+                url: '/uni_modules/uni-id-pages/pages/login/login-withpwd',
             });
         },
         addMeatMode() {
@@ -104,7 +104,7 @@ export default Vue.extend({
             this.isShowAddVegetable = false;
             uni.navigateTo({
                 // url: '/uni_modules/uni-id-pages/pages/login/login-smscode'
-                url: '/uni_modules/uni-id-pages/pages/login/login-withoutpwd'
+                url: '/uni_modules/uni-id-pages/pages/login/login-withoutpwd',
             });
         },
         deleteVegetable(i) {
