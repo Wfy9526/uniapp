@@ -25,6 +25,10 @@
 			"description": "肉类",
 			"bsonType": "array",
 			"arrayType": "string"
+		},
+		"remark": {
+			"description": "备忘录",
+			"bsonType": "string"
 		}
 	}
 }
