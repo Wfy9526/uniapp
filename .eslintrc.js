@@ -30,6 +30,7 @@ module.exports = {
     "rules": {
         'no-unused-vars': 1,
         'no-undef': 1,
+        'no-debugger': 1,
         //在computed properties中禁用异步actions
         'vue/no-async-in-computed-properties': 0,
         //不允许重复的keys

@@ -22,7 +22,7 @@
                 <input
                     class="uni-input"
                     :focus="isShowAddVegetable"
-                    @blur="addVegetable"
+                    @blue="addVegetable"
                     v-model="vegetableInputValue"
                     placeholder="请输入蔬菜，多个蔬菜用逗号分隔"
                 />
@@ -50,7 +50,7 @@
             <view v-show="isShowAddMeat" class="add-meat">
                 <input
                     class="uni-input"
-                    @blur="addMeat"
+                    @blue="addMeat"
                     v-model="meatInputValue"
                     :focus="isShowAddMeat"
                     placeholder="请输入肉类，多个肉类用逗号分隔"
@@ -75,22 +75,16 @@ export default Vue.extend({
             isShowDeleteIcon: false,
             isShowAddVegetable: false,
             isShowAddMeat: false,
-            searchValue: '',
             vegetableInputValue: '',
             meatInputValue: '',
             remark: '',
-            vegetableData: ['aaa', 'BBB', 'DDD'],
-            meatData: ['ccc', 'rrr', 'fgg'],
+            vegetableData: [],
+            meatData: [],
+            menuDB: undefined,
         };
     },
     computed: {},
     methods: {
-        clear() {
-            this.searchValue = '';
-        },
-        search() {
-            //
-        },
         addVegetableMode() {
             this.isShowAddVegetable = true;
             this.isShowAddMeat = false;
@@ -99,31 +93,86 @@ export default Vue.extend({
             this.isShowAddMeat = true;
             this.isShowAddVegetable = false;
         },
-        deleteVegetable(i) {
+        async deleteVegetable(i) {
             this.vegetableData.splice(i, 1);
+            await this.menuDB.update({
+                vegetableData: this.vegetableData,
+            });
         },
-        deleteMeat(i) {
+        async deleteMeat(i) {
             this.meatData.splice(i, 1);
+            await this.menuDB.update({
+                meatData: this.meatData,
+            });
         },
-        addVegetable() {
-            if (this.vegetableInputValue.trim()) {
-                this.vegetableInputValue.replace('，', ',');
-                this.vegetableData.push(...this.vegetableInputValue.split(','));
+        async addVegetable() {
+            if (!this.vegetableInputValue.trim()) {
+                return;
             }
-            this.vegetableInputValue = '';
+
             this.isShowAddVegetable = false;
-        },
-        addMeat(e) {
-            if (this.meatInputValue.trim()) {
-                this.meatInputValue.replace('，', ',');
-                this.meatData.push(...this.meatInputValue.split(','));
+            this.vegetableInputValue = '';
+
+            const _set = new Set(this.vegetableData);
+            this.vegetableInputValue.replace('，', ',');
+            this.vegetableInputValue.split(',').forEach((v) => _set.add(v));
+            this.vegetableData = [..._set];
+
+            const res = await this.menuDB.get();
+            const [data] = res.result.data;
+
+            if (data) {
+                await this.menuDB.update({
+                    vegetableData: this.vegetableData,
+                });
+            } else {
+                await this.menuDB.add({
+                    user_id: uniCloud.getCurrentUserInfo().uid,
+                    meatData: this.meatData,
+                    vegetableData: this.vegetableData,
+                });
             }
-            this.meatInputValue = '';
+        },
+
+        async addMeat() {
             this.isShowAddMeat = false;
+            this.meatInputValue = '';
+
+            if (!this.meatInputValue.trim()) {
+                return;
+            }
+
+            const _set = new Set(this.meatData);
+            this.meatInputValue.replace('，', ',');
+            this.meatInputValue.split(',').forEach((v) => _set.add(v));
+            this.meatData = [..._set];
+
+            const res = await this.menuDB.get();
+            const [data] = res.result.data;
+
+            if (data) {
+                await this.menuDB.update({
+                    meatData: this.meatData,
+                });
+            } else {
+                await this.menuDB.add({
+                    user_id: uniCloud.getCurrentUserInfo().uid,
+                    meatData: this.meatData,
+                    vegetableData: this.vegetableData,
+                });
+            }
         },
     },
     watch: {},
-
+    async beforeMount() {
+        this.menuDB = uniCloud.database().collection('menu').where(`user_id==$cloudEnv_uid`);
+        const res = await this.menuDB.get();
+        const [data] = res.result.data;
+        if (data) {
+            this.meatData = data.meatData;
+            this.vegetableData = data.vegetableData;
+        }
+    },
     // 页面周期函数--监听页面加载
     onLoad() {},
     // 页面周期函数--监听页面初次渲染完成
