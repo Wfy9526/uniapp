@@ -59,7 +59,8 @@
             <button @click="addMeatMode">添加肉类</button>
         </view>
         <uni-title type="h4" title="备忘录" align="center"></uni-title>
-        <textarea class="nav_item" v-model="remark" placeholder="备注..."> </textarea>
+        <textarea class="nav_item" v-model="remark" @blur="changeRemark" placeholder="备注...">
+        </textarea>
     </view>
 </template>
 
@@ -118,20 +119,9 @@ export default Vue.extend({
             this.vegetableInputValue.split(',').forEach((v) => _set.add(v));
             this.vegetableData = [..._set];
 
-            const res = await this.menuDB.get();
-            const [data] = res.result.data;
-
-            if (data) {
-                await this.menuDB.update({
-                    vegetableData: this.vegetableData,
-                });
-            } else {
-                await this.menuDB.add({
-                    user_id: uniCloud.getCurrentUserInfo().uid,
-                    meatData: this.meatData,
-                    vegetableData: this.vegetableData,
-                });
-            }
+            await this.menuDB.update({
+                vegetableData: this.vegetableData,
+            });
         },
 
         async addMeat() {
@@ -147,20 +137,15 @@ export default Vue.extend({
             this.meatInputValue.split(',').forEach((v) => _set.add(v));
             this.meatData = [..._set];
 
-            const res = await this.menuDB.get();
-            const [data] = res.result.data;
+            await this.menuDB.update({
+                meatData: this.meatData,
+            });
+        },
 
-            if (data) {
-                await this.menuDB.update({
-                    meatData: this.meatData,
-                });
-            } else {
-                await this.menuDB.add({
-                    user_id: uniCloud.getCurrentUserInfo().uid,
-                    meatData: this.meatData,
-                    vegetableData: this.vegetableData,
-                });
-            }
+        async changeRemark() {
+            await this.menuDB.update({
+                remark: this.remark,
+            });
         },
     },
     watch: {},
@@ -171,6 +156,14 @@ export default Vue.extend({
         if (data) {
             this.meatData = data.meatData;
             this.vegetableData = data.vegetableData;
+            this.remark = data.remark;
+        } else {
+            await this.menuDB.add({
+                user_id: uniCloud.getCurrentUserInfo().uid,
+                meatData: this.meatData,
+                vegetableData: this.vegetableData,
+                remark: this.remark,
+            });
         }
     },
     // 页面周期函数--监听页面加载
