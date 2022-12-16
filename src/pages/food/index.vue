@@ -22,7 +22,7 @@
                 <input
                     class="uni-input"
                     :focus="isShowAddVegetable"
-                    @blue="addVegetable"
+                    @blur="addVegetable"
                     v-model="vegetableInputValue"
                     placeholder="请输入蔬菜，多个蔬菜用逗号分隔"
                 />
@@ -50,7 +50,7 @@
             <view v-show="isShowAddMeat" class="add-meat">
                 <input
                     class="uni-input"
-                    @blue="addMeat"
+                    @blur="addMeat"
                     v-model="meatInputValue"
                     :focus="isShowAddMeat"
                     placeholder="请输入肉类，多个肉类用逗号分隔"
