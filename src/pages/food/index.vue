@@ -94,18 +94,10 @@ export default Vue.extend({
         addVegetableMode() {
             this.isShowAddVegetable = true;
             this.isShowAddMeat = false;
-            uni.navigateTo({
-                // url: '/uni_modules/uni-id-pages/pages/login/login-smscode'
-                url: '/uni_modules/uni-id-pages/pages/login/login-withpwd'
-            });
         },
         addMeatMode() {
             this.isShowAddMeat = true;
             this.isShowAddVegetable = false;
-            uni.navigateTo({
-                // url: '/uni_modules/uni-id-pages/pages/login/login-smscode'
-                url: '/uni_modules/uni-id-pages/pages/login/login-withoutpwd'
-            });
         },
         deleteVegetable(i) {
             this.vegetableData.splice(i, 1);

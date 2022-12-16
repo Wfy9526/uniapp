@@ -1,7 +1,6 @@
 //更详细的配置文档请参考：https://github.com/vuejs/eslint-plugin-vue#gear-configs
 module.exports = {
-    "extends": "plugin:vue/base",
-    // extends: ['plugin:vue/essential', 'eslint:recommended', '@vue/prettier'],
+    extends: ['plugin:vue/essential', 'eslint:recommended', '@vue/prettier'],
 
     "parserOptions": {
         parser: 'babel-eslint',
@@ -25,9 +24,12 @@ module.exports = {
     globals: {
         uniCloud: true,
         wx: 'readonly',
+        uniCloud: 'readonly',
         uni: 'readonly',
     },
     "rules": {
+        'no-unused-vars': 1,
+        'no-undef': 1,
         //在computed properties中禁用异步actions
         'vue/no-async-in-computed-properties': 0,
         //不允许重复的keys
