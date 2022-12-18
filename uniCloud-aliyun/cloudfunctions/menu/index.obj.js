@@ -1,29 +1,32 @@
 // 云对象教程: https://uniapp.dcloud.net.cn/uniCloud/cloud-obj
 // jsdoc语法提示教程：https://ask.dcloud.net.cn/docs/#//ask.dcloud.net.cn/article/129
 module.exports = {
-	_before: function () { // 通用预处理器
-
-	},
-	/**
-	 * method1方法描述
-	 * @param {string} param1 参数1描述
-	 * @returns {object} 返回值描述
-	 */
-	/* 
-	method1(param1) {
-		// 参数校验，如无参数则不需要
-		if (!param1) {
-			return {
-				errCode: 'PARAM_IS_NULL',
-				errMsg: '参数不能为空'
-			}
-		}
-		// 业务逻辑
-		
-		// 返回结果
-		return {
-			param1 //请根据实际需要返回值
-		}
-	}
-	*/
-}
+    /**
+     * 菜单分类
+     */
+    getMenuCategory() {
+        // 返回结果
+        return [
+            {
+                image: 'https://jtl3d.oss-cn-hangzhou.aliyuncs.com/Data/Models/p/web_e69d22d8c5354cec8909291d011e7ec4.jpg?src=3d&x-oss-process=image/resize,w_512,h_512',
+                name: '荤菜',
+                type: 'meat',
+            },
+            {
+                image: 'https://jtl3d.oss-cn-hangzhou.aliyuncs.com/Data/Models/p/web_e69d22d8c5354cec8909291d011e7ec4.jpg?src=3d&x-oss-process=image/resize,w_512,h_512',
+                name: '素菜',
+                type: 'vegetable',
+            },
+            {
+                image: 'https://jtl3d.oss-cn-hangzhou.aliyuncs.com/Data/Models/p/web_e69d22d8c5354cec8909291d011e7ec4.jpg?src=3d&x-oss-process=image/resize,w_512,h_512',
+                name: '煲汤',
+                type: 'stewSoup',
+            },
+            {
+                image: 'https://jtl3d.oss-cn-hangzhou.aliyuncs.com/Data/Models/p/web_e69d22d8c5354cec8909291d011e7ec4.jpg?src=3d&x-oss-process=image/resize,w_512,h_512',
+                name: '早餐',
+                type: 'breakfast',
+            },
+        ];
+    },
+};

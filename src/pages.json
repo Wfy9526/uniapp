@@ -15,7 +15,7 @@
 			"needLogin": true
 		},
 		{
-			"path": "pages/menu/index",
+			"path": "pages/menu/menu",
 			"style": {
 				"navigationBarTitleText": "菜单"
 			},
@@ -28,9 +28,16 @@
 			}
 		},
 		{
-			"path": "pages/add-menu/index",
+			"path": "pages/menu/add-menu",
 			"style": {
 				"navigationBarTitleText": "添加菜谱"
+			},
+			"needLogin": true
+		},
+		{
+			"path": "pages/menu/search-menu",
+			"style": {
+				"navigationBarTitleText": ""
 			},
 			"needLogin": true
 		},
@@ -150,7 +157,7 @@
 				"text": "食材"
 			},
 			{
-				"pagePath": "pages/menu/index",
+				"pagePath": "pages/menu/menu",
 				"iconPath": "",
 				"selectedIconPath": "",
 				"text": "菜谱"

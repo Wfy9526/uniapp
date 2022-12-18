@@ -19,9 +19,10 @@
                 </template>
             </scroll-view>
             <view v-show="isShowAddVegetable" class="add-vegetable">
-                <input
+                <uni-easyinput
                     class="uni-input"
                     :focus="isShowAddVegetable"
+                    trim="all"
                     @blur="addVegetable"
                     v-model="vegetableInputValue"
                     placeholder="请输入蔬菜，多个蔬菜用逗号分隔"
@@ -48,8 +49,9 @@
                 </template>
             </scroll-view>
             <view v-show="isShowAddMeat" class="add-meat">
-                <input
+                <uni-easyinput
                     class="uni-input"
+                    trim="all"
                     @blur="addMeat"
                     v-model="meatInputValue"
                     :focus="isShowAddMeat"
@@ -107,39 +109,37 @@ export default Vue.extend({
             });
         },
         async addVegetable() {
-            if (!this.vegetableInputValue.trim()) {
-                return;
+            this.isShowAddVegetable = false;
+
+            if (this.vegetableInputValue.trim()) {
+                const _set = new Set(this.vegetableData);
+                this.vegetableInputValue.replace('，', ',');
+                this.vegetableInputValue.split(',').forEach((v) => _set.add(v));
+                this.vegetableData = [..._set];
+
+                await this.menuDB.update({
+                    vegetableData: this.vegetableData,
+                });
             }
 
-            this.isShowAddVegetable = false;
             this.vegetableInputValue = '';
-
-            const _set = new Set(this.vegetableData);
-            this.vegetableInputValue.replace('，', ',');
-            this.vegetableInputValue.split(',').forEach((v) => _set.add(v));
-            this.vegetableData = [..._set];
-
-            await this.menuDB.update({
-                vegetableData: this.vegetableData,
-            });
         },
 
         async addMeat() {
             this.isShowAddMeat = false;
-            this.meatInputValue = '';
 
-            if (!this.meatInputValue.trim()) {
-                return;
+            if (this.meatInputValue.trim()) {
+                const _set = new Set(this.meatData);
+                this.meatInputValue.replace('，', ',');
+                this.meatInputValue.split(',').forEach((v) => _set.add(v));
+                this.meatData = [..._set];
+
+                await this.menuDB.update({
+                    meatData: this.meatData,
+                });
             }
 
-            const _set = new Set(this.meatData);
-            this.meatInputValue.replace('，', ',');
-            this.meatInputValue.split(',').forEach((v) => _set.add(v));
-            this.meatData = [..._set];
-
-            await this.menuDB.update({
-                meatData: this.meatData,
-            });
+            this.meatInputValue = '';
         },
 
         async changeRemark() {
@@ -150,7 +150,7 @@ export default Vue.extend({
     },
     watch: {},
     async beforeMount() {
-        this.menuDB = uniCloud.database().collection('menu').where(`user_id==$cloudEnv_uid`);
+        this.menuDB = uniCloud.database().collection('food').where('user_id==$cloudEnv_uid');
         const res = await this.menuDB.get();
         const [data] = res.result.data;
         if (data) {
@@ -158,7 +158,7 @@ export default Vue.extend({
             this.vegetableData = data.vegetableData;
             this.remark = data.remark;
         } else {
-            await this.menuDB.add({
+            await uniCloud.database().collection('food').add({
                 user_id: uniCloud.getCurrentUserInfo().uid,
                 meatData: this.meatData,
                 vegetableData: this.vegetableData,

@@ -129,7 +129,11 @@
                             <uni-tag
                                 :key="item.name"
                                 :text="item.name"
-                                :type="item.buttonType"
+                                :type="
+                                    selectMenuCategory === `${item.name}-${item.type}`
+                                        ? 'primary'
+                                        : ''
+                                "
                                 @click="addTag(menu, i)"
                             />
                         </template>
@@ -173,6 +177,7 @@ export default Vue.extend({
                 { name: '周六' },
             ],
             labelMenuData: {},
+            selectMenuCategory: '',
         };
     },
     watch: {
@@ -237,8 +242,7 @@ export default Vue.extend({
             this.$refs.popup.open('top');
         },
         addTag(arr, i) {
-            arr[i].buttonType = arr[i].buttonType ? '' : 'primary';
-            this.labelMenuData = { ...this.labelMenuData };
+            this.selectMenuCategory = `${arr[i].name}-${arr[i].type}`;
         },
 
         deleteMenu(data, i) {
@@ -256,14 +260,18 @@ export default Vue.extend({
     // 页面周期函数--监听页面初次渲染完成
     onReady() {},
     // 页面周期函数--监听页面显示(not-nvue)
-    onShow() {
+    async onShow() {
+        const menuData = await uniCloud
+            .database()
+            .collection('menu')
+            .where('user_id==$cloudEnv_uid')
+            .get();
         this.labelMenuData = {};
-        // eslint-disable-next-line no-undef
-        getApp().globalData.menuData.forEach((menu) => {
+
+        menuData.forEach((menu) => {
             if (!this.labelMenuData[menu.label]) {
                 this.labelMenuData[menu.label] = [];
             }
-            menu.buttonType = '';
             this.labelMenuData[menu.label].push(menu);
         });
     },

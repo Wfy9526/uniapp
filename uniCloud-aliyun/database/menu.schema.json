@@ -16,19 +16,65 @@
 			"foreignKey": "uni-id-users._id",
 			"bsonType": "string"
 		},
-		"vegetableData": {
-			"description": "蔬菜",
+		"vegetable": {
+			"description": "素菜",
 			"bsonType": "array",
-			"arrayType": "string"
+			"arrayType": "object",
+			"properties": {
+				"image": {
+					"bsonType": "string",
+					"description": "图片"
+				},
+				"name": {
+					"bsonType": "string",
+					"description": "菜谱名字"
+				}
+			}
 		},
-		"meatData": {
-			"description": "肉类",
+		"meat": {
+			"description": "荤菜",
 			"bsonType": "array",
-			"arrayType": "string"
+			"arrayType": "object",
+			"properties": {
+				"image": {
+					"bsonType": "string",
+					"description": "图片"
+				},
+				"name": {
+					"bsonType": "string",
+					"description": "菜谱名字"
+				}
+			}
 		},
-		"remark": {
-			"description": "备忘录",
-			"bsonType": "string"
+		"stewSoup": {
+			"description": "煲汤",
+			"bsonType": "array",
+			"arrayType": "object",
+			"properties": {
+				"image": {
+					"bsonType": "string",
+					"description": "图片"
+				},
+				"name": {
+					"bsonType": "string",
+					"description": "菜谱名字"
+				}
+			}
+		},
+		"breakfast": {
+			"description": "早餐",
+			"bsonType": "array",
+			"arrayType": "object",
+			"properties": {
+				"image": {
+					"bsonType": "string",
+					"description": "图片"
+				},
+				"name": {
+					"bsonType": "string",
+					"description": "菜谱名字"
+				}
+			}
 		}
 	}
 }

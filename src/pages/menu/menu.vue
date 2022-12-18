@@ -7,27 +7,34 @@
 
         <uni-grid :column="4" :show-border="false" :square="false">
             <uni-grid-item v-for="(item, index) in labelData" :key="index">
-                <view class="grid-item-box">
+                <view class="grid-item-box" @click="searchMenu(item.type)">
                     <image :src="item.image" class="grid-image"></image>
                     <view>{{ item.name }}</view>
                 </view>
             </uni-grid-item>
         </uni-grid>
-        <uni-grid :column="2" :show-border="false" :square="false">
-            <uni-grid-item v-for="(item, index) in menuData" :key="index">
-                <view class="grid-item-box">
-                    <image :src="item.image" class="grid-image2"></image>
-                    <view>{{ item.name }}</view>
-                </view>
-            </uni-grid-item>
-        </uni-grid>
+        <template v-if="menuData.length">
+            <uni-grid :column="2" :show-border="false" :square="false">
+                <uni-grid-item v-for="(item, index) in menuData" :key="index">
+                    <view class="grid-item-box">
+                        <image :src="item.image" class="grid-image2"></image>
+                        <view>{{ item.name }}</view>
+                    </view>
+                </uni-grid-item>
+            </uni-grid>
+        </template>
+        <template v-else>
+            <view class=""> 空空如也 =。= </view>
+            <view class=""> 点击按钮添加菜譜吧~ </view>
+        </template>
+
         <uni-fab
             ref="fab"
             :pattern="pattern"
             :horizontal="horizontal"
             :vertical="vertical"
             :direction="direction"
-            @fabClick="fabClick"
+            @fabClick="addMenu"
         />
     </view>
 </template>
@@ -56,24 +63,33 @@ export default Vue.extend({
     },
     computed: {},
     methods: {
-        fabClick() {
+        searchMenu(type) {
             uni.navigateTo({
-                url: '../add-menu/index',
+                url: `../menu/search-menu?type=${type}`,
+            });
+        },
+        addMenu() {
+            uni.navigateTo({
+                url: '../menu/add-menu',
             });
         },
     },
     watch: {},
-
+    async beforeMount() {
+        const menuObj = uniCloud.importObject('menu');
+        this.labelData = await menuObj.getMenuCategory();
+    },
     // 页面周期函数--监听页面加载
     onLoad() {},
     // 页面周期函数--监听页面初次渲染完成
     onReady() {},
     // 页面周期函数--监听页面显示(not-nvue)
-    onShow() {
-        // eslint-disable-next-line no-undef
-        this.labelData = getApp().globalData.labelData;
-        // eslint-disable-next-line no-undef
-        this.menuData = getApp().globalData.menuData;
+    async onShow() {
+        this.menuData = await uniCloud
+            .database()
+            .collection('menu')
+            .where('user_id==$cloudEnv_uid')
+            .get();
     },
     // 页面周期函数--监听页面隐藏
     onHide() {},
