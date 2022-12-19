@@ -24,8 +24,8 @@
             </uni-grid>
         </template>
         <template v-else>
-            <view class=""> 空空如也 =。= </view>
-            <view class=""> 点击按钮添加菜譜吧~ </view>
+            <view class="tips"> 空空如也 =。= </view>
+            <view class="tips"> 点击按钮添加菜譜吧~ </view>
         </template>
 
         <uni-fab
@@ -42,7 +42,7 @@
 <script>
 import Vue from 'vue';
 export default Vue.extend({
-    name: 'menu',
+    name: 'menus',
     components: {},
     props: {},
     data() {
@@ -85,11 +85,22 @@ export default Vue.extend({
     onReady() {},
     // 页面周期函数--监听页面显示(not-nvue)
     async onShow() {
-        this.menuData = await uniCloud
-            .database()
-            .collection('menu')
-            .where('user_id==$cloudEnv_uid')
-            .get();
+        // this.menuData = await uniCloud
+        const db = uniCloud.database();
+        const res = await db.collection('menu').where('user_id==$cloudEnv_uid').get();
+        const [data] = res.result.data;
+
+        if (data) {
+            this.menuData = [...data.meat, ...data.vegetable, ...data.breakfast, ...data.stewSoup];
+        } else {
+            db.collection('menu').add({
+                user_id: uniCloud.getCurrentUserInfo().uid,
+                vegetable: [],
+                meat: [],
+                stewSoup: [],
+                breakfast: [],
+            });
+        }
     },
     // 页面周期函数--监听页面隐藏
     onHide() {},
@@ -125,6 +136,10 @@ export default Vue.extend({
             width: 100%;
             height: 250rpx;
         }
+    }
+    .tips {
+        margin-top: 20%;
+        text-align: center;
     }
 }
 </style>

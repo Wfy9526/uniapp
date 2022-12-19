@@ -90,10 +90,19 @@ export default Vue.extend({
     computed: {},
     methods: {
         addMenuName() {},
-        addMenu() {
-            this.$refs.valiForm.validate().then((res) => {
-                console.log('表单数据信息：', res);
+        async addMenu() {
+            const validateRes = await this.$refs.valiForm.validate();
+            const db = uniCloud.database();
+            const res = await db.collection('menu').where('user_id==$cloudEnv_uid').get();
+            const [data] = res.result.data;
+            data[validateRes.selectMenuCategory].push({
+                image: validateRes.imageValue[0].url,
+                name: validateRes.menuName,
             });
+            const updateData = {};
+            updateData[validateRes.selectMenuCategory] = data[validateRes.selectMenuCategory];
+            await db.collection('menu').where('user_id==$cloudEnv_uid').update(updateData);
+            uni.navigateBack();
         },
         addTag(i) {
             this.formData.selectMenuCategory = this.labelData[i].type;
