@@ -14,10 +14,11 @@
 
         <unicloud-db
             ref="udb"
-            v-slot:default="{ data, loading, error, options }"
+            v-slot:default="{ data, loading, options }"
             :options="formData"
             :collection="collection"
             :field="field"
+            where="user_id==$cloudEnv_uid"
             @load="load"
         >
             <!-- 基于 uni-list 的页面布局 -->
@@ -86,9 +87,9 @@ export default {
     data() {
         return {
             // 数据表名
-            collection: 'opendb-mall-goods',
+            collection: 'menu',
             // 查询字段，多个字段用 , 分割
-            field: 'goods_thumb,name,goods_tip,tag,goods_price,comment_count,month_sell_count,shop_name',
+            field: '',
             formData: {
                 waterfall: false, // 布局方向切换
                 status: 'loading', // 加载状态
@@ -96,7 +97,9 @@ export default {
             tipShow: false, // 是否显示顶部提示框
         };
     },
-    onLoad() {},
+    onLoad(options) {
+        this.field = options.type;
+    },
     methods: {
         /**
          * 切换商品列表布局方向
