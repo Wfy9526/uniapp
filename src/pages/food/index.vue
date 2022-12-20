@@ -18,17 +18,6 @@
                     </view>
                 </template>
             </scroll-view>
-            <view v-show="isShowAddVegetable" class="add-vegetable">
-                <uni-easyinput
-                    class="uni-input"
-                    :focus="isShowAddVegetable"
-                    trim="all"
-                    @blur="addVegetable"
-                    v-model="vegetableInputValue"
-                    placeholder="请输入蔬菜，多个蔬菜用逗号分隔"
-                />
-            </view>
-            <button @click="addVegetableMode">添加蔬菜</button>
         </view>
         <view class="meat">
             <uni-title type="h4" title="肉类" align="center"></uni-title>
@@ -48,21 +37,34 @@
                     </view>
                 </template>
             </scroll-view>
-            <view v-show="isShowAddMeat" class="add-meat">
-                <uni-easyinput
-                    class="uni-input"
-                    trim="all"
-                    @blur="addMeat"
-                    v-model="meatInputValue"
-                    :focus="isShowAddMeat"
-                    placeholder="请输入肉类，多个肉类用逗号分隔"
-                />
-            </view>
-            <button @click="addMeatMode">添加肉类</button>
         </view>
         <uni-title type="h4" title="备忘录" align="center"></uni-title>
         <textarea class="nav_item" v-model="remark" @blur="changeRemark" placeholder="备注...">
         </textarea>
+
+        <uni-fab
+            ref="fab"
+            :pattern="pattern"
+            :horizontal="horizontal"
+            :vertical="vertical"
+            :direction="direction"
+            :content="content"
+            @trigger="trigger"
+        />
+
+        <view>
+            <!-- 输入框示例 -->
+            <uni-popup ref="inputDialog" type="dialog">
+                <uni-popup-dialog
+                    ref="inputClose"
+                    mode="input"
+                    :title="dialogTitle"
+                    placeholder="多个食物用逗号分隔"
+                    @confirm="dialogInputConfirm"
+                    @close="dialogClose"
+                ></uni-popup-dialog>
+            </uni-popup>
+        </view>
     </view>
 </template>
 
@@ -75,27 +77,44 @@ export default Vue.extend({
     props: {},
     data() {
         return {
+            horizontal: 'right',
+            vertical: 'bottom',
+            direction: 'horizontal',
+            pattern: {
+                color: '#7A7E83',
+                backgroundColor: '#fff',
+                selectedColor: '#007AFF',
+                buttonColor: '#007AFF',
+                iconColor: '#fff',
+            },
+            content: [
+                {
+                    iconPath: '',
+                    selectedIconPath: '',
+                    text: '蔬菜',
+                    type: 'vegetable',
+                    active: false,
+                },
+                {
+                    iconPath: '',
+                    selectedIconPath: '',
+                    text: '肉类',
+                    type: 'meat',
+
+                    active: false,
+                },
+            ],
             isShowDeleteIcon: false,
-            isShowAddVegetable: false,
-            isShowAddMeat: false,
-            vegetableInputValue: '',
-            meatInputValue: '',
             remark: '',
             vegetableData: [],
             meatData: [],
             menuDB: undefined,
+            selectFoodType: '',
+            dialogTitle: '',
         };
     },
     computed: {},
     methods: {
-        addVegetableMode() {
-            this.isShowAddVegetable = true;
-            this.isShowAddMeat = false;
-        },
-        addMeatMode() {
-            this.isShowAddMeat = true;
-            this.isShowAddVegetable = false;
-        },
         async deleteVegetable(i) {
             this.vegetableData.splice(i, 1);
             await this.menuDB.update({
@@ -108,43 +127,59 @@ export default Vue.extend({
                 meatData: this.meatData,
             });
         },
-        async addVegetable() {
-            this.isShowAddVegetable = false;
+        async addVegetable(foodValue) {
+            const _set = new Set(this.vegetableData);
+            foodValue.replace('，', ',');
+            foodValue.split(',').forEach((v) => _set.add(v));
+            this.vegetableData = [..._set];
 
-            if (this.vegetableInputValue.trim()) {
-                const _set = new Set(this.vegetableData);
-                this.vegetableInputValue.replace('，', ',');
-                this.vegetableInputValue.split(',').forEach((v) => _set.add(v));
-                this.vegetableData = [..._set];
-
-                await this.menuDB.update({
-                    vegetableData: this.vegetableData,
-                });
-            }
-
-            this.vegetableInputValue = '';
+            await this.menuDB.update({
+                vegetableData: this.vegetableData,
+            });
         },
 
-        async addMeat() {
-            this.isShowAddMeat = false;
+        async addMeat(foodValue) {
+            const _set = new Set(this.meatData);
+            foodValue.replace('，', ',');
+            foodValue.split(',').forEach((v) => _set.add(v));
+            this.meatData = [..._set];
 
-            if (this.meatInputValue.trim()) {
-                const _set = new Set(this.meatData);
-                this.meatInputValue.replace('，', ',');
-                this.meatInputValue.split(',').forEach((v) => _set.add(v));
-                this.meatData = [..._set];
-
-                await this.menuDB.update({
-                    meatData: this.meatData,
-                });
-            }
-
-            this.meatInputValue = '';
+            await this.menuDB.update({
+                meatData: this.meatData,
+            });
         },
 
         async changeRemark() {
             await this.menuDB.update({
                 remark: this.remark,
+            });
+        },
+        trigger(e) {
+            this.content.forEach((_, i) => {
+                if (i !== e.index) {
+                    _.active = false;
+                }
+            });
+            this.content[e.index].active = !e.item.active;
+            this.selectFoodType = e.item.type;
+            this.dialogTitle = e.item.text;
+            this.$refs.inputDialog.open();
+        },
+        async dialogInputConfirm(foodValue) {
+            uni.hideLoading();
+            if (foodValue.trim()) {
+                if (this.selectFoodType === 'meat') {
+                    await this.addMeat(foodValue);
+                } else {
+                    await this.addVegetable(foodValue);
+                }
+            }
+
+            this.$refs.inputDialog.close();
+        },
+        dialogClose() {
+            this.content.forEach((_, i) => {
+                _.active = false;
             });
         },
     },

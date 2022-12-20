@@ -78,6 +78,11 @@ export default Vue.extend({
     async beforeMount() {
         const menuObj = uniCloud.importObject('menu');
         this.labelData = await menuObj.getMenuCategory();
+        const menuData = {};
+        this.labelData.forEach((label) => {
+            menuData[label.type] = label.name;
+        });
+        getApp().globalData.menuData = menuData;
     },
     // 页面周期函数--监听页面加载
     onLoad() {},
@@ -85,7 +90,6 @@ export default Vue.extend({
     onReady() {},
     // 页面周期函数--监听页面显示(not-nvue)
     async onShow() {
-        // this.menuData = await uniCloud
         const db = uniCloud.database();
         const res = await db.collection('menu').where('user_id==$cloudEnv_uid').get();
         const [data] = res.result.data;

@@ -22,13 +22,22 @@
                     placeholder="请输入菜名"
                 />
             </uni-forms-item>
+            <uni-forms-item label="配料表" required name="batchingTable">
+                <uni-easyinput
+                    class="uni-input"
+                    trim="all"
+                    @blur="addBatchingTable"
+                    v-model="formData.batchingTable"
+                    placeholder="配料表"
+                />
+            </uni-forms-item>
             <uni-forms-item label="添加标签" required name="selectMenuCategory">
-                <template v-for="(item, i) in labelData">
+                <template v-for="(value, key) in labelData">
                     <uni-tag
-                        :key="item.name"
-                        :text="item.name"
-                        :type="item.type === formData.selectMenuCategory ? 'primary' : ''"
-                        @click="addTag(i)"
+                        :key="key"
+                        :text="value"
+                        :type="key === formData.selectMenuCategory ? 'primary' : ''"
+                        @click="addTag(key)"
                     />
                 </template>
             </uni-forms-item>
@@ -51,6 +60,7 @@ export default Vue.extend({
                 menuName: '',
                 imageValue: [],
                 selectMenuCategory: '',
+                batchingTable: '',
             },
             rules: {
                 menuName: {
@@ -58,6 +68,14 @@ export default Vue.extend({
                         {
                             required: true,
                             errorMessage: '请输入菜名',
+                        },
+                    ],
+                },
+                batchingTable: {
+                    rules: [
+                        {
+                            required: true,
+                            errorMessage: '配料表',
                         },
                     ],
                 },
@@ -98,14 +116,15 @@ export default Vue.extend({
             data[validateRes.selectMenuCategory].push({
                 image: validateRes.imageValue[0].url,
                 name: validateRes.menuName,
+                remark: validateRes.batchingTable,
             });
             const updateData = {};
             updateData[validateRes.selectMenuCategory] = data[validateRes.selectMenuCategory];
             await db.collection('menu').where('user_id==$cloudEnv_uid').update(updateData);
             uni.navigateBack();
         },
-        addTag(i) {
-            this.formData.selectMenuCategory = this.labelData[i].type;
+        addTag(type) {
+            this.formData.selectMenuCategory = type;
         },
         // 获取上传状态
         select(e) {
@@ -136,14 +155,14 @@ export default Vue.extend({
     },
     // 页面周期函数--监听页面显示(not-nvue)
     async beforeMount() {
-        const menuObj = uniCloud.importObject('menu');
-        this.labelData = await menuObj.getMenuCategory();
+        this.labelData = getApp().globalData.menuData;
     },
     // 页面周期函数--监听页面隐藏
     onShow() {
         // this.formData.menuName = '';
         // this.formData.imageValue = [];
         // this.formData.selectMenuCategory = '';
+        // this.formData.batchingTable = '';
     },
     // 页面周期函数--监听页面隐藏
     onHide() {},

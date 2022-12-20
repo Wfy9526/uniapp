@@ -28,6 +28,10 @@
 				"name": {
 					"bsonType": "string",
 					"description": "菜谱名字"
+				},
+				"remark": {
+					"bsonType": "string",
+					"description": "备注"
 				}
 			}
 		},
@@ -43,6 +47,10 @@
 				"name": {
 					"bsonType": "string",
 					"description": "菜谱名字"
+				},
+				"remark": {
+					"bsonType": "string",
+					"description": "备注"
 				}
 			}
 		},
@@ -58,6 +66,10 @@
 				"name": {
 					"bsonType": "string",
 					"description": "菜谱名字"
+				},
+				"remark": {
+					"bsonType": "string",
+					"description": "备注"
 				}
 			}
 		},
@@ -73,6 +85,10 @@
 				"name": {
 					"bsonType": "string",
 					"description": "菜谱名字"
+				},
+				"remark": {
+					"bsonType": "string",
+					"description": "备注"
 				}
 			}
 		}
