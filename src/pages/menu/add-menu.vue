@@ -32,7 +32,7 @@
                 />
             </uni-forms-item>
             <uni-forms-item label="添加标签" required name="selectMenuCategory">
-                <template v-for="(value, key) in labelData">
+                <template v-for="(value, key) in menuCategory">
                     <uni-tag
                         :key="key"
                         :text="value"
@@ -55,7 +55,7 @@ export default Vue.extend({
     props: {},
     data() {
         return {
-            labelData: [],
+            menuCategory: {},
             formData: {
                 menuName: '',
                 imageValue: [],
@@ -155,7 +155,7 @@ export default Vue.extend({
     },
     // 页面周期函数--监听页面显示(not-nvue)
     async beforeMount() {
-        this.labelData = getApp().globalData.menuData;
+        this.menuCategory = getApp().globalData.menuCategory;
     },
     // 页面周期函数--监听页面隐藏
     onShow() {

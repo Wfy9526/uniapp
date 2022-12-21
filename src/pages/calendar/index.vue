@@ -100,8 +100,8 @@
 
         <uni-popup ref="popup" background-color="#fff" @change="popupChange">
             <view class="popup-content">
-                <template v-for="(menu, label) in labelMenuData">
-                    <uni-group :key="label" :title="label">
+                <template v-for="(val, key) in menuCategory">
+                    <uni-group :key="key" :title="val">
                         <template v-for="(item, i) in menu">
                             <uni-tag
                                 :key="item.name"
@@ -167,6 +167,7 @@ export default Vue.extend({
             selectMenuCategory: '',
             selectFoodType: '',
             pattern: {},
+            menuCategory: {},
             content: [
                 {
                     iconPath: '',
@@ -266,7 +267,17 @@ export default Vue.extend({
                 .collection('menu')
                 .where('user_id==$cloudEnv_uid')
                 .get();
-            this.labelMenuData = menuData.result.data[0] || {};
+                const [data] = menuData.result.data;
+                if(data){
+                    this.labelMenuData = [0] || {};
+                    Object.entries(this.menuCategory).forEach(([k, v]) => {
+                        this.labelMenuData[k] = 
+                    })
+
+                    for(let val  of this.menuCategory){
+                        this.labelMenuData[]
+                    }
+                }
         },
         trigger(e) {
             this.content.forEach((_, i) => {
@@ -283,6 +294,7 @@ export default Vue.extend({
     // 页面周期函数--监听页面加载
     async onLoad() {
         this.pattern = getApp().globalData.uniFabPattern;
+        this.menuCategory = getApp().globalData.menuCategory;
         await this.loadMenuData();
     },
     // 页面周期函数--监听页面初次渲染完成

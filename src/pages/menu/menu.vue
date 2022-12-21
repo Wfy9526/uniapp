@@ -69,11 +69,11 @@ export default Vue.extend({
     async beforeMount() {
         const menuObj = uniCloud.importObject('menu');
         this.labelData = await menuObj.getMenuCategory();
-        const menuData = {};
+        const menuCategory = {};
         this.labelData.forEach((label) => {
-            menuData[label.type] = label.name;
+            menuCategory[label.type] = label.name;
         });
-        getApp().globalData.menuData = menuData;
+        getApp().globalData.menuCategory = menuCategory;
     },
     // 页面周期函数--监听页面加载
     onLoad() {
