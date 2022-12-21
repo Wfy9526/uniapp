@@ -1,7 +1,9 @@
 <script>
 import uniIdPageInit from '@/uni_modules/uni-id-pages/init.js';
 export default {
-    globalData: {},
+    globalData: {
+        menuCategory: {},
+    },
     async onLaunch() {
         console.log('App Launch');
         await uniIdPageInit();
