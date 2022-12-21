@@ -1,0 +1,125 @@
+{
+	"bsonType": "object",
+	"required": [],
+	"permission": {
+		"read": false,
+		"create": false,
+		"update": false,
+		"delete": false
+	},
+	"properties": {
+		"_id": {
+			"description": "ID，系统自动生成"
+		},
+		"user_id": {
+			"description": "用户id",
+			"foreignKey": "uni-id-users._id",
+			"bsonType": "string"
+		},
+		"day1": {
+			"description": "周一",
+			"bsonType": "array",
+			"arrayType": "object",
+			"properties": {
+				"type": {
+					"description": "类型，午餐还是晚餐",
+					"bsonType": "string"
+				},
+				"name": {
+					"description": "菜名",
+					"bsonType": "string"
+				}
+			}
+		},
+		"day2": {
+			"description": "周二",
+			"bsonType": "array",
+			"arrayType": "object",
+			"properties": {
+				"type": {
+					"description": "类型，午餐还是晚餐",
+					"bsonType": "string"
+				},
+				"name": {
+					"description": "菜名",
+					"bsonType": "string"
+				}
+			}
+		},
+		"day3": {
+			"description": "周3",
+			"bsonType": "array",
+			"arrayType": "object",
+			"properties": {
+				"type": {
+					"description": "类型，午餐还是晚餐",
+					"bsonType": "string"
+				},
+				"name": {
+					"description": "菜名",
+					"bsonType": "string"
+				}
+			}
+		},
+		"day4": {
+			"description": "周4",
+			"bsonType": "array",
+			"arrayType": "object",
+			"properties": {
+				"type": {
+					"description": "类型，午餐还是晚餐",
+					"bsonType": "string"
+				},
+				"name": {
+					"description": "菜名",
+					"bsonType": "string"
+				}
+			}
+		},
+		"day5": {
+			"description": "周5",
+			"bsonType": "array",
+			"arrayType": "object",
+			"properties": {
+				"type": {
+					"description": "类型，午餐还是晚餐",
+					"bsonType": "string"
+				},
+				"name": {
+					"description": "菜名",
+					"bsonType": "string"
+				}
+			}
+		},
+		"day6": {
+			"description": "周6",
+			"bsonType": "array",
+			"arrayType": "object",
+			"properties": {
+				"type": {
+					"description": "类型，午餐还是晚餐",
+					"bsonType": "string"
+				},
+				"name": {
+					"description": "菜名",
+					"bsonType": "string"
+				}
+			}
+		},
+		"day7": {
+			"description": "周日",
+			"bsonType": "array",
+			"arrayType": "object",
+			"properties": {
+				"type": {
+					"description": "类型，午餐还是晚餐",
+					"bsonType": "string"
+				},
+				"name": {
+					"description": "菜名",
+					"bsonType": "string"
+				}
+			}
+		}
+	}
+}
