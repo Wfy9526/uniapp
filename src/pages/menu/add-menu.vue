@@ -17,7 +17,6 @@
                 <uni-easyinput
                     class="uni-input"
                     trim="all"
-                    @blur="addMenuName"
                     v-model="formData.menuName"
                     placeholder="请输入菜名"
                 />
@@ -26,7 +25,6 @@
                 <uni-easyinput
                     class="uni-input"
                     trim="all"
-                    @blur="addBatchingTable"
                     v-model="formData.batchingTable"
                     placeholder="配料表"
                 />
@@ -107,7 +105,6 @@ export default Vue.extend({
     },
     computed: {},
     methods: {
-        addMenuName() {},
         async addMenu() {
             const validateRes = await this.$refs.valiForm.validate();
             const db = uniCloud.database();

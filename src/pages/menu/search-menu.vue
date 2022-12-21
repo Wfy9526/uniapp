@@ -15,7 +15,7 @@
             <uni-list-item
                 :border="true"
                 class="uni-list-item--waterfall"
-                title="自定义商品列表"
+                title=""
                 v-for="(item, i) in menuData"
                 :key="i"
             >
@@ -49,34 +49,27 @@ export default {
     components: {},
     data() {
         return {
+            title: '',
             menuData: [],
         };
     },
-    onLoad() {},
-    methods: {
-        /**
-         * 切换商品列表布局方向
-         */
-        select() {
-            this.formData.waterfall = !this.formData.waterfall;
-        },
-
-        load(data, ended) {
-            if (ended) {
-                this.formData.status = 'noMore';
-            }
-        },
+    async onLoad(options) {
+        this.title = getApp().globalData.menuCategory[options.type];
+        uni.setNavigationBarTitle({
+            title: `${this.title}查询`,
+        });
+        const db = uniCloud.database();
+        const res = await db
+            .collection('menu')
+            .where('user_id==$cloudEnv_uid')
+            .field(options.type)
+            .get();
+        const [data] = res.result.data;
+        if (data) {
+            this.menuData = data[options.type];
+        }
     },
-    /**
-     * 下拉刷新回调函数
-     */
-    onPullDownRefresh() {},
-    /**
-     * 上拉加载回调函数
-     */
-    onReachBottom() {
-        this.$refs.udb.loadMore();
-    },
+    methods: {},
 };
 </script>
 

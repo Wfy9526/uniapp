@@ -36,9 +36,9 @@
             >
                 <scroll-view scroll-y style="height: 100%">
                     <uni-group title="早餐">
-                        <view class="tag-container">
+                        <view class="tag-container" v-if="item.breakfastData">
                             <view class="tag" v-for="(breakfast, i) in item.breakfastData" :key="i">
-                                <text>{{ breakfast }}</text>
+                                <text>{{ breakfast.name }}</text>
                                 <icon
                                     class="del-icon"
                                     type="cancel"
@@ -47,18 +47,11 @@
                                 ></icon>
                             </view>
                         </view>
-
-                        <textarea
-                            class="nav_item"
-                            v-model="item.breakfastText"
-                            placeholder="自定义内容..."
-                        >
-                        </textarea>
                     </uni-group>
                     <uni-group title="中餐">
-                        <view class="tag-container">
+                        <view class="tag-container" v-if="item.lunchData">
                             <view class="tag" v-for="(lunch, i) in item.lunchData" :key="i">
-                                <view>{{ lunch }}</view>
+                                <view>{{ lunch.name }}</view>
                                 <icon
                                     class="del-icon"
                                     type="cancel"
@@ -67,18 +60,11 @@
                                 ></icon>
                             </view>
                         </view>
-
-                        <textarea
-                            class="nav_item"
-                            v-model="item.lunchText"
-                            placeholder="自定义内容..."
-                        >
-                        </textarea>
                     </uni-group>
                     <uni-group title="晚餐">
-                        <view class="tag-container">
+                        <view class="tag-container" v-if="item.supperData">
                             <view class="tag" v-for="(supper, i) in item.supperData" :key="i">
-                                <view>{{ supper }}</view>
+                                <view>{{ supper.name }}</view>
                                 <icon
                                     class="del-icon"
                                     type="cancel"
@@ -87,12 +73,6 @@
                                 ></icon>
                             </view>
                         </view>
-                        <textarea
-                            class="nav_item"
-                            v-model="item.supperText"
-                            placeholder="自定义内容..."
-                        >
-                        </textarea>
                     </uni-group>
                 </scroll-view>
             </swiper-item>
@@ -100,18 +80,18 @@
 
         <uni-popup ref="popup" background-color="#fff" @change="popupChange">
             <view class="popup-content">
-                <template v-for="(val, key) in menuCategory">
-                    <uni-group :key="key" :title="val">
-                        <template v-for="(item, i) in menu">
+                <template v-for="val in menuCategory">
+                    <uni-group :key="val.type" :title="val.name">
+                        <template v-for="item in labelMenuData[val.type]">
                             <uni-tag
                                 :key="item.name"
                                 :text="item.name"
                                 :type="
-                                    selectMenuCategory === `${item.name}-${item.type}`
+                                    selectMenuCategory.includes(`${item.name}-${item.type}`)
                                         ? 'primary'
                                         : ''
                                 "
-                                @click="addTag(menu, i)"
+                                @click="clickTag(`${item.name}-${item.type}`)"
                             />
                         </template>
                     </uni-group>
@@ -144,30 +124,22 @@ export default Vue.extend({
             contentScrollW: 0, // 导航区宽度
             scrollLeft: 0, // 横向滚动条位置
             fullHeight: '',
-            tabsContentsData: [
-                {
-                    breakfastText: '',
-                    lunchText: '',
-                    supperText: '',
-                    breakfastData: ['1', '2', '233', '444dsa', '66'],
-                    lunchData: [],
-                    supperData: [],
-                },
-            ],
+            tabsContentsData: [],
             tabsData: [
-                { name: '周日' },
-                { name: '周一' },
-                { name: '周二' },
-                { name: '周三' },
-                { name: '周四' },
-                { name: '周五' },
-                { name: '周六' },
+                { name: '周一', type: 'day1' },
+                { name: '周二', type: 'day2' },
+                { name: '周三', type: 'day3' },
+                { name: '周四', type: 'day4' },
+                { name: '周五', type: 'day5' },
+                { name: '周六', type: 'day6' },
+                { name: '周日', type: 'day7' },
             ],
             labelMenuData: {},
-            selectMenuCategory: '',
+            menuCategory: [],
+            selectMenuCategory: [],
             selectFoodType: '',
+            selectDay: '',
             pattern: {},
-            menuCategory: {},
             content: [
                 {
                     iconPath: '',
@@ -245,39 +217,72 @@ export default Vue.extend({
             for (let i = 0; i < index - 1; i++) {
                 this.scrollLeft += this.tabsData[i].width;
             }
+            this.selectDay = this.tabsData[index].type;
         },
         // swiper滑动时，获取其索引，也就是第几个
         swiperChange(e) {
             this.currentindex = e.detail.current;
         },
-        addTag(arr, i) {
-            this.selectMenuCategory = `${arr[i].name}-${arr[i].type}`;
+        clickTag(category) {
+            const _set = new Set(this.selectMenuCategory);
+            if (_set.has(category)) {
+                _set.delete(category);
+            } else {
+                _set.add(category);
+            }
+            this.selectMenuCategory = [..._set];
         },
         deleteMenu(data, i) {
             data.splice(i, 1);
+            //TODO:
         },
-        async popupChange(e) {
-            if (!e.show) {
-                //
-            }
-        },
+
         async loadMenuData() {
             const menuData = await uniCloud
                 .database()
                 .collection('menu')
                 .where('user_id==$cloudEnv_uid')
                 .get();
-                const [data] = menuData.result.data;
-                if(data){
-                    this.labelMenuData = [0] || {};
-                    Object.entries(this.menuCategory).forEach(([k, v]) => {
-                        this.labelMenuData[k] = 
-                    })
-
-                    for(let val  of this.menuCategory){
-                        this.labelMenuData[]
-                    }
-                }
+            const [data] = menuData.result.data;
+            if (data) {
+                this.labelMenuData = data;
+            }
+        },
+        async loadCalendarData() {
+            const menuData = await uniCloud
+                .database()
+                .collection('calendar')
+                .where('user_id==$cloudEnv_uid')
+                .get();
+            const [data] = menuData.result.data;
+            if (data) {
+                this.tabsContentsData = this.tabsData.map((tab) => {
+                    const breakfastData = [];
+                    const supperData = [];
+                    const lunchData = [];
+                    data[tab.type].forEach((d) => {
+                        if (d.type === 'breakfast') {
+                            breakfastData.push(d);
+                        } else if (d.type === 'lunch') {
+                            lunchData.push(d);
+                        } else {
+                            supperData.push(d);
+                        }
+                    });
+                    return { breakfastData, supperData, lunchData };
+                });
+            } else {
+                await uniCloud.database().collection('calendar').add({
+                    user_id: uniCloud.getCurrentUserInfo().id,
+                    day1: [],
+                    day2: [],
+                    day3: [],
+                    day4: [],
+                    day5: [],
+                    day6: [],
+                    day7: [],
+                });
+            }
         },
         trigger(e) {
             this.content.forEach((_, i) => {
@@ -289,12 +294,20 @@ export default Vue.extend({
             this.selectFoodType = e.item.type;
             this.$refs.popup.open('top');
         },
+        async popupChange(e) {
+            if (!e.show && this.selectMenuCategory.length) {
+                //TODO:
+            }
+        },
     },
-
+    async beforeMount() {
+        const menuObj = uniCloud.importObject('menu');
+        this.menuCategory = await menuObj.getMenuCategory();
+    },
     // 页面周期函数--监听页面加载
     async onLoad() {
         this.pattern = getApp().globalData.uniFabPattern;
-        this.menuCategory = getApp().globalData.menuCategory;
+        await this.loadCalendarData();
         await this.loadMenuData();
     },
     // 页面周期函数--监听页面初次渲染完成
