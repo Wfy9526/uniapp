@@ -3,6 +3,13 @@ import uniIdPageInit from '@/uni_modules/uni-id-pages/init.js';
 export default {
     globalData: {
         menuCategory: {},
+        uniFabPattern: {
+            color: '#7A7E83',
+            backgroundColor: '#fff',
+            selectedColor: '#007AFF',
+            buttonColor: '#007AFF',
+            iconColor: '#fff',
+        },
     },
     async onLaunch() {
         console.log('App Launch');

@@ -46,14 +46,6 @@
                                     @click="deleteMenu(item.breakfastData, i)"
                                 ></icon>
                             </view>
-                            <view>
-                                <uni-icons
-                                    type="plus-filled"
-                                    size="30"
-                                    @click="addMenu('breakfast')"
-                                ></uni-icons
-                                >添加菜谱
-                            </view>
                         </view>
 
                         <textarea
@@ -73,14 +65,6 @@
                                     size="16"
                                     @click="deleteMenu(item.lunchData, i)"
                                 ></icon>
-                            </view>
-                            <view>
-                                <uni-icons
-                                    type="plus-filled"
-                                    size="30"
-                                    @click="addMenu('lunch')"
-                                ></uni-icons
-                                >添加菜谱
                             </view>
                         </view>
 
@@ -103,14 +87,6 @@
                                 ></icon>
                             </view>
                         </view>
-                        <view>
-                            <uni-icons
-                                type="plus-filled"
-                                size="30"
-                                @click="addMenu('supper')"
-                            ></uni-icons
-                            >添加菜谱
-                        </view>
                         <textarea
                             class="nav_item"
                             v-model="item.supperText"
@@ -121,6 +97,7 @@
                 </scroll-view>
             </swiper-item>
         </swiper>
+
         <uni-popup ref="popup" background-color="#fff" @change="popupChange">
             <view class="popup-content">
                 <template v-for="(menu, label) in labelMenuData">
@@ -141,6 +118,16 @@
                 </template>
             </view>
         </uni-popup>
+
+        <uni-fab
+            ref="fab"
+            :pattern="pattern"
+            horizontal="right"
+            vertical="bottom"
+            direction="horizontal"
+            :content="content"
+            @trigger="trigger"
+        />
     </view>
 </template>
 
@@ -178,6 +165,31 @@ export default Vue.extend({
             ],
             labelMenuData: {},
             selectMenuCategory: '',
+            selectFoodType: '',
+            pattern: {},
+            content: [
+                {
+                    iconPath: '',
+                    selectedIconPath: '',
+                    text: '早餐',
+                    type: 'breakfast',
+                    active: false,
+                },
+                {
+                    iconPath: '',
+                    selectedIconPath: '',
+                    text: '午餐',
+                    type: 'lunch',
+                    active: false,
+                },
+                {
+                    iconPath: '',
+                    selectedIconPath: '',
+                    text: '晚餐',
+                    type: 'supper',
+                    active: false,
+                },
+            ],
         };
     },
     watch: {
@@ -237,44 +249,46 @@ export default Vue.extend({
         swiperChange(e) {
             this.currentindex = e.detail.current;
         },
-
-        addMenu(type) {
-            this.$refs.popup.open('top');
-        },
         addTag(arr, i) {
             this.selectMenuCategory = `${arr[i].name}-${arr[i].type}`;
         },
-
         deleteMenu(data, i) {
             data.splice(i, 1);
         },
-        popupChange(e) {
+        async popupChange(e) {
             if (!e.show) {
                 //
             }
         },
+        async loadMenuData() {
+            const menuData = await uniCloud
+                .database()
+                .collection('menu')
+                .where('user_id==$cloudEnv_uid')
+                .get();
+            this.labelMenuData = menuData.result.data[0] || {};
+        },
+        trigger(e) {
+            this.content.forEach((_, i) => {
+                if (i !== e.index) {
+                    _.active = false;
+                }
+            });
+            this.content[e.index].active = !e.item.active;
+            this.selectFoodType = e.item.type;
+            this.$refs.popup.open('top');
+        },
     },
 
     // 页面周期函数--监听页面加载
-    onLoad() {},
+    async onLoad() {
+        this.pattern = getApp().globalData.uniFabPattern;
+        await this.loadMenuData();
+    },
     // 页面周期函数--监听页面初次渲染完成
     onReady() {},
     // 页面周期函数--监听页面显示(not-nvue)
-    async onShow() {
-        const menuData = await uniCloud
-            .database()
-            .collection('menu')
-            .where('user_id==$cloudEnv_uid')
-            .get();
-        this.labelMenuData = {};
-
-        menuData.forEach((menu) => {
-            if (!this.labelMenuData[menu.label]) {
-                this.labelMenuData[menu.label] = [];
-            }
-            this.labelMenuData[menu.label].push(menu);
-        });
-    },
+    onShow() {},
     // 页面周期函数--监听页面隐藏
     onHide() {},
     // 页面周期函数--监听页面卸载

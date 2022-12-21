@@ -45,9 +45,9 @@
         <uni-fab
             ref="fab"
             :pattern="pattern"
-            :horizontal="horizontal"
-            :vertical="vertical"
-            :direction="direction"
+            horizontal="right"
+            vertical="bottom"
+            direction="horizontal"
             :content="content"
             @trigger="trigger"
         />
@@ -77,16 +77,7 @@ export default Vue.extend({
     props: {},
     data() {
         return {
-            horizontal: 'right',
-            vertical: 'bottom',
-            direction: 'horizontal',
-            pattern: {
-                color: '#7A7E83',
-                backgroundColor: '#fff',
-                selectedColor: '#007AFF',
-                buttonColor: '#007AFF',
-                iconColor: '#fff',
-            },
+            pattern: {},
             content: [
                 {
                     iconPath: '',
@@ -202,7 +193,9 @@ export default Vue.extend({
         }
     },
     // 页面周期函数--监听页面加载
-    onLoad() {},
+    async onLoad() {
+        this.pattern = getApp().globalData.uniFabPattern;
+    },
     // 页面周期函数--监听页面初次渲染完成
     onReady() {},
     // 页面周期函数--监听页面显示(not-nvue)
