@@ -14,10 +14,16 @@
             </uni-grid-item>
         </uni-grid>
         <template v-if="menuData.length">
+            <!-- 页面分类标题 -->
+            <uni-section title="tips: 长按3s删除~" type="line"></uni-section>
             <uni-grid :column="2" :show-border="false" :square="false">
                 <uni-grid-item v-for="(item, index) in menuData" :key="index">
                     <view class="grid-item-box">
-                        <image :src="item.image" class="grid-image2"></image>
+                        <image
+                            :src="item.image"
+                            class="grid-image2"
+                            @longpress="longpressDelete(item.type, index)"
+                        ></image>
                         <view>{{ item.name }}</view>
                     </view>
                 </uni-grid-item>
@@ -63,6 +69,13 @@ export default Vue.extend({
                 url: '../menu/add-menu',
             });
         },
+        async longpressDelete(type, i) {
+            this.meatData.splice(i, 1);
+            const updateData = {};
+            updateData[type] = this.meatData.filter((d) => d.type === type);
+            const db = uniCloud.database();
+            await db.collection('menu').where('user_id==$cloudEnv_uid').update(updateData);
+        },
     },
     watch: {},
     async beforeMount() {
@@ -87,7 +100,12 @@ export default Vue.extend({
         const [data] = res.result.data;
 
         if (data) {
-            this.menuData = [...data.meat, ...data.vegetable, ...data.breakfast, ...data.stewSoup];
+            const menuData = [];
+            Object.entries(data).forEach(([k, v]) => {
+                v.type = k;
+                menuData.push(v);
+            });
+            this.menuData = menuData;
         } else {
             db.collection('menu').add({
                 user_id: uniCloud.getCurrentUserInfo().uid,
