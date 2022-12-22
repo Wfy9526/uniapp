@@ -51,7 +51,7 @@
                     <uni-group title="中餐">
                         <view class="tag-container" v-if="item.lunchData">
                             <view class="tag" v-for="(lunch, i) in item.lunchData" :key="i">
-                                <view>{{ lunch.name }}</view>
+                                <text>{{ lunch.name }}</text>
                                 <icon
                                     class="del-icon"
                                     type="cancel"
@@ -64,7 +64,7 @@
                     <uni-group title="晚餐">
                         <view class="tag-container" v-if="item.supperData">
                             <view class="tag" v-for="(supper, i) in item.supperData" :key="i">
-                                <view>{{ supper.name }}</view>
+                                <text>{{ supper.name }}</text>
                                 <icon
                                     class="del-icon"
                                     type="cancel"
@@ -83,16 +83,17 @@
                 <template v-for="val in menuCategory">
                     <uni-group :key="val.type" :title="val.name">
                         <template v-for="item in labelMenuData[val.type]">
-                            <uni-tag
-                                :key="item.name"
-                                :text="item.name"
-                                :type="
-                                    selectMenuCategory.includes(`${item.name}-${val.type}`)
-                                        ? 'primary'
-                                        : ''
-                                "
-                                @click="clickTag(`${item.name}-${val.type}`)"
-                            />
+                            <view class="label" :key="item.name">
+                                <uni-tag
+                                    :text="item.name"
+                                    :type="
+                                        selectMenuCategory.includes(`${item.name}-${val.type}`)
+                                            ? 'primary'
+                                            : ''
+                                    "
+                                    @click="clickTag(`${item.name}-${val.type}`)"
+                                />
+                            </view>
                         </template>
                     </uni-group>
                 </template>
@@ -377,7 +378,7 @@ export default Vue.extend({
     width: 100%;
     .nav {
         border-top: 1rpx solid #f2f2f2;
-        background-color: #fceeee;
+        background-color: #f1f1f1;
         height: 100rpx;
         line-height: 100rpx;
         .tab-scroll {
@@ -417,8 +418,23 @@ export default Vue.extend({
         align-items: center;
         flex-wrap: wrap;
         .tag {
-            margin: 10rpx 20rpx;
+            padding: 10rpx 20rpx;
+            background: lightgrey;
+            border-radius: 20rpx;
+            height: 40rpx;
+            line-height: 40rpx;
+            font-size: 32rpx;
+            margin-right: 25rpx;
+            margin-bottom: 20rpx;
         }
+        .del-icon {
+            margin-left: 5rpx;
+        }
+    }
+    .label {
+        display: inline-block;
+        margin-right: 10px;
+        margin-bottom: 20rpx;
     }
 }
 </style>
