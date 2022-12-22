@@ -4,7 +4,6 @@
             <uni-forms-item label="封面图" required name="imageValue">
                 <uni-file-picker
                     limit="1"
-                    title="选择图片上传"
                     v-model="formData.imageValue"
                     fileMediatype="image"
                     @select="select"
@@ -21,27 +20,31 @@
                     placeholder="请输入菜名"
                 />
             </uni-forms-item>
+
+            <uni-forms-item label="标签" required name="selectMenuCategory">
+                <view class="tag-container">
+                    <template v-for="(value, key) in menuCategory">
+                        <uni-tag
+                            class="tag"
+                            :key="key"
+                            :text="value"
+                            :type="key === formData.selectMenuCategory ? 'primary' : ''"
+                            @click="addTag(key)"
+                        />
+                    </template>
+                </view>
+            </uni-forms-item>
             <uni-forms-item label="配料表" required name="batchingTable">
-                <uni-easyinput
-                    class="uni-input"
-                    trim="all"
+                <textarea
+                    class="batching-table"
                     v-model="formData.batchingTable"
-                    placeholder="配料表"
+                    placeholder="请输入..."
                 />
             </uni-forms-item>
-            <uni-forms-item label="添加标签" required name="selectMenuCategory">
-                <template v-for="(value, key) in menuCategory">
-                    <uni-tag
-                        :key="key"
-                        :text="value"
-                        :type="key === formData.selectMenuCategory ? 'primary' : ''"
-                        @click="addTag(key)"
-                    />
-                </template>
-            </uni-forms-item>
         </uni-forms>
-
-        <button @click="addMenu">添加</button>
+        <view class="btn-container">
+            <button class="mini-btn" type="default" size="mini" @click="addMenu">添加</button>
+        </view>
     </view>
 </template>
 
@@ -176,4 +179,24 @@ export default Vue.extend({
 });
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.add-menu {
+    padding: 10rpx 30rpx;
+    .tag-container {
+        line-height: 80rpx;
+    }
+    .tag {
+        margin-right: 20rpx;
+    }
+    .batching-table {
+        width: 92%;
+        margin: 0 auto;
+        border: 1px solid lightgrey;
+        border-radius: 20rpx;
+        padding: 20rpx;
+    }
+    .btn-container {
+        text-align: center;
+    }
+}
+</style>

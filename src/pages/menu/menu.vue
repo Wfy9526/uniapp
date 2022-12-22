@@ -24,7 +24,6 @@
             </uni-grid>
         </template>
         <template v-else>
-            <view class="tips"> 空空如也 =。= </view>
             <view class="tips"> 点击按钮添加菜譜吧~ </view>
         </template>
 
@@ -118,24 +117,28 @@ export default Vue.extend({
 .menu {
     .header {
         display: flex;
-        justify-content: center;
         align-items: center;
         padding: 0 20rpx;
     }
     .grid-item-box {
         padding: 10rpx 20rpx;
         text-align: center;
+        font-size: 30rpx;
         .grid-image {
+            border-radius: 20rpx;
             width: 100%;
             height: 150rpx;
+            border: 1px solid lightgrey;
         }
         .grid-image2 {
             width: 100%;
             height: 250rpx;
+            border-radius: 20rpx;
+            border: 1px solid lightgrey;
         }
     }
     .tips {
-        margin-top: 20%;
+        margin-top: 40%;
         text-align: center;
     }
 }

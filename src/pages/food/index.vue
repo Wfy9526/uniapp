@@ -4,8 +4,8 @@
         <view class="vegetable">
             <uni-title type="h4" title="蔬菜" align="center"></uni-title>
             <scroll-view scroll-y="true">
-                <template v-if="vegetableData.length">
-                    <view class="tag-container">
+                <view class="tag-container">
+                    <template v-if="vegetableData.length">
                         <view class="tag" v-for="(item, i) in vegetableData" :key="item">
                             <text>{{ item }}</text>
                             <icon
@@ -15,15 +15,15 @@
                                 @click="deleteVegetable(i)"
                             ></icon>
                         </view>
-                    </view>
-                </template>
+                    </template>
+                </view>
             </scroll-view>
         </view>
         <view class="meat">
             <uni-title type="h4" title="肉类" align="center"></uni-title>
             <scroll-view scroll-y="true">
-                <template v-if="meatData.length">
-                    <view class="tag-container">
+                <view class="tag-container">
+                    <template v-if="meatData.length">
                         <view class="tag" v-for="(item, i) in meatData" :key="item">
                             <text>{{ item }}</text>
 
@@ -34,8 +34,8 @@
                                 @click="deleteMeat(i)"
                             ></icon>
                         </view>
-                    </view>
-                </template>
+                    </template>
+                </view>
             </scroll-view>
         </view>
         <uni-title type="h4" title="备忘录" align="center"></uni-title>

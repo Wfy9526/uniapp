@@ -1,11 +1,4 @@
 <template>
-    <!--
-	本页面模板教程：https://ext.dcloud.net.cn/plugin?id=2651
-	uni-list 文档：https://ext.dcloud.net.cn/plugin?id=24
-	uniCloud 文档：https://uniapp.dcloud.io/uniCloud/README
-	unicloud-db 组件文档：https://uniapp.dcloud.io/uniCloud/unicloud-db
-	DB Schema 规范：https://uniapp.dcloud.net.cn/uniCloud/schema
-	 -->
     <view class="list">
         <!-- 页面分类标题 -->
         <uni-section :title="title" type="line"></uni-section>
@@ -41,6 +34,9 @@
                 </template>
             </uni-list-item>
         </uni-list>
+        <template v-if="!menuData.length">
+            <view class="tips"> 未查询到数据~ </view>
+        </template>
     </view>
 </template>
 
@@ -84,21 +80,10 @@ page {
     height: auto;
 }
 .tips {
-    color: #67c23a;
-    font-size: 14px;
-    line-height: 40px;
+    margin-top: 40%;
     text-align: center;
-    background-color: #f0f9eb;
-    height: 0;
-    opacity: 0;
-    transform: translateY(-100%);
-    transition: all 0.3s;
 }
-.tips-ani {
-    transform: translateY(0);
-    height: 40px;
-    opacity: 1;
-}
+
 .shop {
     flex: 1;
     display: flex;
