@@ -39,7 +39,7 @@
             </scroll-view>
         </view>
         <uni-title type="h4" title="备忘录" align="center"></uni-title>
-        <textarea class="nav_item" v-model="remark" @blur="changeRemark" placeholder="备注...">
+        <textarea class="food-text" v-model="remark" @blur="changeRemark" placeholder="备注...">
         </textarea>
 
         <uni-fab
@@ -120,8 +120,10 @@ export default Vue.extend({
         },
         async addVegetable(foodValue) {
             const _set = new Set(this.vegetableData);
-            foodValue.replace('，', ',');
-            foodValue.split(',').forEach((v) => _set.add(v));
+            foodValue
+                .replace(/，/g, ',')
+                .split(',')
+                .forEach((v) => v && _set.add(v));
             this.vegetableData = [..._set];
 
             await this.menuDB.update({
@@ -131,8 +133,10 @@ export default Vue.extend({
 
         async addMeat(foodValue) {
             const _set = new Set(this.meatData);
-            foodValue.replace('，', ',');
-            foodValue.split(',').forEach((v) => _set.add(v));
+            foodValue
+                .replace(/，/g, ',')
+                .split(',')
+                .forEach((v) => v && _set.add(v));
             this.meatData = [..._set];
 
             await this.menuDB.update({
@@ -218,10 +222,33 @@ export default Vue.extend({
 <style lang="scss" scoped>
 .tag-container {
     display: flex;
-    align-items: center;
     flex-wrap: wrap;
+    background: lightgrey;
+    height: 360rpx;
+    border-radius: 20rpx;
+    width: 85%;
+    margin: 0 auto;
+    padding: 30rpx 0 0 30rpx;
+    overflow: auto;
     .tag {
-        margin: 10rpx 20rpx;
+        padding: 10rpx 20rpx;
+        background: #fff;
+        border-radius: 20rpx;
+        height: 40rpx;
+        line-height: 40rpx;
+        font-size: 32rpx;
+        margin-right: 30rpx;
+        margin-bottom: 20rpx;
+        .del-icon {
+            margin-left: 5rpx;
+        }
     }
+}
+.food-text {
+    width: 83%;
+    margin: 0 auto;
+    border: 1px solid lightgrey;
+    border-radius: 20rpx;
+    padding: 20rpx;
 }
 </style>
