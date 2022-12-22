@@ -25,6 +25,10 @@
 					"bsonType": "string",
 					"description": "图片"
 				},
+				"type": {
+					"bsonType": "string",
+					"description": "菜的类型，早晚餐"
+				},
 				"name": {
 					"bsonType": "string",
 					"description": "菜谱名字"
@@ -48,6 +52,10 @@
 					"bsonType": "string",
 					"description": "菜谱名字"
 				},
+				"type": {
+					"bsonType": "string",
+					"description": "菜的类型，早晚餐"
+				},
 				"remark": {
 					"bsonType": "string",
 					"description": "备注"
@@ -67,6 +75,10 @@
 					"bsonType": "string",
 					"description": "菜谱名字"
 				},
+				"type": {
+					"bsonType": "string",
+					"description": "菜的类型，早晚餐"
+				},
 				"remark": {
 					"bsonType": "string",
 					"description": "备注"
@@ -81,6 +93,10 @@
 				"image": {
 					"bsonType": "string",
 					"description": "图片"
+				},
+				"type": {
+					"bsonType": "string",
+					"description": "菜的类型，早晚餐"
 				},
 				"name": {
 					"bsonType": "string",

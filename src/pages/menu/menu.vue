@@ -15,7 +15,7 @@
         </uni-grid>
         <template v-if="menuData.length">
             <!-- 页面分类标题 -->
-            <uni-section title="tips: 长按3s删除~" type="line"></uni-section>
+            <uni-section title="tips: 长按删除~" type="line"></uni-section>
             <uni-grid :column="2" :show-border="false" :square="false">
                 <uni-grid-item v-for="(item, index) in menuData" :key="index">
                     <view class="grid-item-box">
@@ -75,15 +75,9 @@ export default Vue.extend({
                 content: `确定要删除： ${name}?`,
                 success: async (res) => {
                     if (res.confirm) {
-                        this.meatData.splice(i, 1);
+                        this.menuData.splice(i, 1);
                         const updateData = {};
-                        updateData[type] = this.meatData.filter((d) => {
-                            if (d.type === type) {
-                                delete d.type;
-                                return true;
-                            }
-                            return false;
-                        });
+                        updateData[type] = this.menuData.filter((d) => d.type === type);
                         const db = uniCloud.database();
                         await db
                             .collection('menu')
@@ -120,15 +114,12 @@ export default Vue.extend({
 
         if (data) {
             const menuData = [];
-            Object.entries(data).forEach(([k, v]) => {
+            Object.values(data).forEach((v) => {
                 if (Array.isArray(v)) {
-                    v.forEach((_) => {
-                        _.type = k;
-                    });
-                    menuData.push(v);
+                    menuData.push(...v);
                 }
             });
-            debugger;
+
             this.menuData = menuData;
         } else {
             db.collection('menu').add({

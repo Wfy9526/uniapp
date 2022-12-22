@@ -116,6 +116,7 @@ export default Vue.extend({
             data[validateRes.selectMenuCategory].push({
                 image: validateRes.imageValue[0].url,
                 name: validateRes.menuName,
+                type: validateRes.selectMenuCategory,
                 remark: validateRes.batchingTable,
             });
             const updateData = {};
@@ -137,7 +138,7 @@ export default Vue.extend({
 
         // 上传成功
         success(e) {
-            console.log('上传成功');
+            console.log('上传成功', e);
         },
 
         // 上传失败
