@@ -22,7 +22,7 @@
                         <image
                             :src="item.image"
                             class="grid-image2"
-                            @longpress="longpressDelete(item.type, index)"
+                            @longpress="longpressDelete(item.name, item.type, index)"
                         ></image>
                         <view>{{ item.name }}</view>
                     </view>
@@ -69,12 +69,31 @@ export default Vue.extend({
                 url: '../menu/add-menu',
             });
         },
-        async longpressDelete(type, i) {
-            this.meatData.splice(i, 1);
-            const updateData = {};
-            updateData[type] = this.meatData.filter((d) => d.type === type);
-            const db = uniCloud.database();
-            await db.collection('menu').where('user_id==$cloudEnv_uid').update(updateData);
+        longpressDelete(name, type, i) {
+            uni.showModal({
+                title: '提示',
+                content: `确定要删除： ${name}?`,
+                success: async (res) => {
+                    if (res.confirm) {
+                        this.meatData.splice(i, 1);
+                        const updateData = {};
+                        updateData[type] = this.meatData.filter((d) => {
+                            if (d.type === type) {
+                                delete d.type;
+                                return true;
+                            }
+                            return false;
+                        });
+                        const db = uniCloud.database();
+                        await db
+                            .collection('menu')
+                            .where('user_id==$cloudEnv_uid')
+                            .update(updateData);
+                    } else if (res.cancel) {
+                        console.log('用户点击取消');
+                    }
+                },
+            });
         },
     },
     watch: {},
@@ -102,9 +121,14 @@ export default Vue.extend({
         if (data) {
             const menuData = [];
             Object.entries(data).forEach(([k, v]) => {
-                v.type = k;
-                menuData.push(v);
+                if (Array.isArray(v)) {
+                    v.forEach((_) => {
+                        _.type = k;
+                    });
+                    menuData.push(v);
+                }
             });
+            debugger;
             this.menuData = menuData;
         } else {
             db.collection('menu').add({
