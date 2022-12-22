@@ -87,11 +87,11 @@
                                 :key="item.name"
                                 :text="item.name"
                                 :type="
-                                    selectMenuCategory.includes(`${item.name}-${item.type}`)
+                                    selectMenuCategory.includes(`${item.name}-${val.type}`)
                                         ? 'primary'
                                         : ''
                                 "
-                                @click="clickTag(`${item.name}-${item.type}`)"
+                                @click="clickTag(`${item.name}-${val.type}`)"
                             />
                         </template>
                     </uni-group>
@@ -124,7 +124,7 @@ export default Vue.extend({
             contentScrollW: 0, // 导航区宽度
             scrollLeft: 0, // 横向滚动条位置
             fullHeight: '',
-            tabsContentsData: [],
+            tabsContentsData: {},
             tabsData: [
                 { name: '周一', type: 'day1' },
                 { name: '周二', type: 'day2' },
@@ -232,9 +232,21 @@ export default Vue.extend({
             }
             this.selectMenuCategory = [..._set];
         },
-        deleteMenu(data, i) {
+        async deleteMenu(data, i) {
             data.splice(i, 1);
-            //TODO:
+            this.tabsContentsData = { ...this.tabsContentsData };
+            const dayDatas = this.tabsContentsData[this.selectDay];
+            const updateData = {};
+            updateData[this.selectDay] = [
+                ...dayDatas.breakfastData,
+                ...dayDatas.lunchData,
+                ...dayDatas.supperData,
+            ];
+            await uniCloud
+                .database()
+                .collection('calendar')
+                .where('user_id==$cloudEnv_uid')
+                .update(updateData);
         },
 
         async loadMenuData() {
@@ -256,7 +268,7 @@ export default Vue.extend({
                 .get();
             const [data] = menuData.result.data;
             if (data) {
-                this.tabsContentsData = this.tabsData.map((tab) => {
+                this.tabsData.forEach((tab) => {
                     const breakfastData = [];
                     const supperData = [];
                     const lunchData = [];
@@ -269,11 +281,11 @@ export default Vue.extend({
                             supperData.push(d);
                         }
                     });
-                    return { breakfastData, supperData, lunchData };
+                    this.tabsContentsData[tab.type] = { breakfastData, supperData, lunchData };
                 });
             } else {
                 await uniCloud.database().collection('calendar').add({
-                    user_id: uniCloud.getCurrentUserInfo().id,
+                    user_id: uniCloud.getCurrentUserInfo().uid,
                     day1: [],
                     day2: [],
                     day3: [],
@@ -296,7 +308,37 @@ export default Vue.extend({
         },
         async popupChange(e) {
             if (!e.show && this.selectMenuCategory.length) {
-                //TODO:
+                if (!this.tabsContentsData[this.selectDay]) {
+                    this.tabsContentsData[this.selectDay] = {
+                        breakfastData: [],
+                        lunchData: [],
+                        supperData: [],
+                    };
+                }
+                const dayDatas = this.tabsContentsData[this.selectDay];
+                this.selectMenuCategory.forEach((menu) => {
+                    const [name] = menu.split('-');
+                    const menuInfo = { name, type: this.selectFoodType };
+                    if (this.selectFoodType === 'breakfast') {
+                        dayDatas.breakfastData.push(menuInfo);
+                    } else if (this.selectFoodType === 'lunch') {
+                        dayDatas.lunchData.push(menuInfo);
+                    } else {
+                        dayDatas.supperData.push(menuInfo);
+                    }
+                });
+                this.tabsContentsData = { ...this.tabsContentsData };
+                const updateData = {};
+                updateData[this.selectDay] = [
+                    ...dayDatas.breakfastData,
+                    ...dayDatas.lunchData,
+                    ...dayDatas.supperData,
+                ];
+                await uniCloud
+                    .database()
+                    .collection('calendar')
+                    .where('user_id==$cloudEnv_uid')
+                    .update(updateData);
             }
         },
     },
@@ -307,6 +349,7 @@ export default Vue.extend({
     // 页面周期函数--监听页面加载
     async onLoad() {
         this.pattern = getApp().globalData.uniFabPattern;
+        this.selectDay = this.tabsData[0].type;
         await this.loadCalendarData();
         await this.loadMenuData();
     },
