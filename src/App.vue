@@ -7,8 +7,8 @@ export default {
             color: '#7A7E83',
             backgroundColor: '#fff',
             selectedColor: '#007AFF',
-            buttonColor: '#007AFF',
-            iconColor: '#fff',
+            buttonColor: '#fff',
+            iconColor: '#aaa',
         },
     },
     async onLaunch() {

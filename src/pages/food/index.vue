@@ -80,18 +80,17 @@ export default Vue.extend({
             pattern: {},
             content: [
                 {
-                    iconPath: '',
-                    selectedIconPath: '',
+                    iconPath: '/static/tabbar/grid.png',
+                    selectedIconPath: '/static/tabbar/grid_active.png',
                     text: '蔬菜',
                     type: 'vegetable',
                     active: false,
                 },
                 {
-                    iconPath: '',
-                    selectedIconPath: '',
+                    iconPath: '/static/tabbar/grid.png',
+                    selectedIconPath: '/static/tabbar/grid_active.png',
                     text: '肉类',
                     type: 'meat',
-
                     active: false,
                 },
             ],

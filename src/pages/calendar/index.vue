@@ -143,22 +143,22 @@ export default Vue.extend({
             pattern: {},
             content: [
                 {
-                    iconPath: '',
-                    selectedIconPath: '',
+                    iconPath: '/static/tabbar/list.png',
+                    selectedIconPath: '/static/tabbar/list_active.png',
                     text: '早餐',
                     type: 'breakfast',
                     active: false,
                 },
                 {
-                    iconPath: '',
-                    selectedIconPath: '',
+                    iconPath: '/static/tabbar/list.png',
+                    selectedIconPath: '/static/tabbar/list_active.png',
                     text: '午餐',
                     type: 'lunch',
                     active: false,
                 },
                 {
-                    iconPath: '',
-                    selectedIconPath: '',
+                    iconPath: '/static/tabbar/list.png',
+                    selectedIconPath: '/static/tabbar/list_active.png',
                     text: '晚餐',
                     type: 'supper',
                     active: false,
