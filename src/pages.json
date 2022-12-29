@@ -152,26 +152,18 @@
 		"list": [
 			{
 				"pagePath": "pages/food/index",
-				"iconPath": "",
-				"selectedIconPath": "",
 				"text": "食材"
 			},
 			{
 				"pagePath": "pages/menu/menu",
-				"iconPath": "",
-				"selectedIconPath": "",
 				"text": "菜谱"
 			},
 			{
 				"pagePath": "pages/calendar/index",
-				"iconPath": "",
-				"selectedIconPath": "",
 				"text": "日历"
 			},
 			{
 				"pagePath": "uni_modules/uni-id-pages/pages/userinfo/userinfo",
-				"iconPath": "",
-				"selectedIconPath": "",
 				"text": "个人资料"
 			}
 		]
