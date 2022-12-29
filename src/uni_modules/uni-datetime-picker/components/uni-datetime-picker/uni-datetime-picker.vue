@@ -91,7 +91,7 @@
 		<calendar v-show="isPhone" ref="mobile" :clearDate="false" :date="defSingleDate" :defTime="reactMobDefTime"
 			:start-date="caleRange.startDate" :end-date="caleRange.endDate" :selectableTimes="mobSelectableTime"
 			:pleStatus="endMultipleStatus" :showMonth="false" :range="isRange" :typeHasTime="hasTime" :insert="false"
-			:hideSecond="hideSecond" @confirm="mobileChange" @maskClose="close" />
+			:hideSecond="hideSecond" @confirm="mobileChange" />
 	</view>
 </template>
 <script>
@@ -121,7 +121,9 @@
 		initVueI18n
 	} from '@dcloudio/uni-i18n'
 	import messages from './i18n/index.js'
-	let t = null
+	const {
+		t
+	} = initVueI18n(messages)
 
 	export default {
 		name: 'UniDatetimePicker',
@@ -397,10 +399,11 @@
 			}
 		},
 		created() {
-			if(!t) {
-				const  vueI18n = initVueI18n(messages)
-				t = vueI18n.t
-			}
+			// if (this.form && this.formItem) {
+			// 	this.$watch('formItem.errMsg', (newVal) => {
+			// 		this.localMsg = newVal
+			// 	})
+			// }
 		},
 		mounted() {
 			this.platform()
@@ -513,7 +516,6 @@
 				setTimeout(() => {
 					this.popup = false
 					this.$emit('maskClick', this.value)
-					this.$refs.mobile.close()
 				}, 20)
 			},
 			setEmit(value) {
@@ -539,8 +541,8 @@
 						}
 					}
 				}
-
-
+				
+				
 				this.$emit('change', value)
 				this.$emit('input', value)
 				this.$emit('update:modelValue', value)
@@ -780,9 +782,7 @@
 	}
 </script>
 
-<style lang="scss">
-	$uni-primary: #007aff !default;
-
+<style>
 	.uni-date {
 		/* #ifndef APP-NVUE */
 		width: 100%;
@@ -941,14 +941,14 @@
 	}
 
 	.popup-x-footer text:hover {
-		color: $uni-primary;
+		color: #007aff;
 		cursor: pointer;
 		opacity: 0.8;
 	}
 
 	.popup-x-footer .confirm {
 		margin-left: 20px;
-		color: $uni-primary;
+		color: #007aff;
 	}
 
 	.uni-date-changed {

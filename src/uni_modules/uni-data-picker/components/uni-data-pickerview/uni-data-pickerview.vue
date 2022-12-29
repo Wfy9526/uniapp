@@ -14,7 +14,7 @@
 		<view class="tab-c">
 			<template v-for="(child, i) in dataList" >
 				<scroll-view class="list" :key="i" v-if="i==selectedIndex" :scroll-y="true">
-					<view class="item" :class="{'is-disabled': !!item.disable}" v-for="(item, j) in child" :key="j"
+					<view class="item" :class="{'is-disabled': !!item.disable}" v-for="(item, j) in child"
 						@click="handleNodeClick(item, i, j)">
 						<text class="item-text item-text-overflow">{{item[map.text]}}</text>
 						<view class="check" v-if="selected.length > i && item[map.value] == selected[i].value"></view>
@@ -177,9 +177,7 @@
 		}
 	}
 </script>
-<style lang="scss">
-	$uni-primary: #007aff !default;
-
+<style >
 	.uni-data-pickerview {
 		flex: 1;
 		/* #ifndef APP-NVUE */
@@ -267,11 +265,11 @@
 	}
 
 	.selected-item-active {
-		border-bottom: 2px solid $uni-primary;
+		border-bottom: 2px solid #007aff;
 	}
 
 	.selected-item-text {
-		color: $uni-primary;
+		color: #007aff;
 	}
 
 	.tab-c {
@@ -321,7 +319,7 @@
 
 	.check {
 		margin-right: 5px;
-		border: 2px solid $uni-primary;
+		border: 2px solid #007aff;
 		border-left: 0;
 		border-top: 0;
 		height: 12px;

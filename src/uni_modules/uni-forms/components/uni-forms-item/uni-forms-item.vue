@@ -387,13 +387,9 @@
 
 			// 是否显示星号
 			_isRequired() {
-				// TODO 不根据规则显示 星号，考虑后续兼容
-				// if (this.form) {
-				// 	if (this.form._isRequiredField(this.itemRules.rules || []) && this.required) {
-				// 		return true
-				// 	}
-				// 	return false
-				// }
+				if (this.form) {
+					return this.required || this.form._isRequiredField(this.itemRules.rules || [])
+				}
 				return this.required
 			},
 

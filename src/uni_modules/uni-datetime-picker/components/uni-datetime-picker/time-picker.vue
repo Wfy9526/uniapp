@@ -185,7 +185,6 @@
 			}
 		},
 		watch: {
-			// #ifndef VUE3
 			value: {
 				handler(newVal, oldVal) {
 					if (newVal) {
@@ -198,21 +197,6 @@
 				},
 				immediate: true
 			},
-			// #endif
-			// #ifdef VUE3
-			modelValue: {
-				handler(newVal, oldVal) {
-					if (newVal) {
-						this.parseValue(this.fixIosDateFormat(newVal)) //兼容 iOS、safari 日期格式
-						this.initTime(false)
-					} else {
-						this.time = ''
-						this.parseValue(Date.now())
-					}
-				},
-				immediate: true
-			},
-			// #endif
 			type: {
 				handler(newValue) {
 					if (newValue === 'date') {
@@ -786,9 +770,7 @@
 	}
 </script>
 
-<style lang="scss">
-	$uni-primary: #007aff !default;
-
+<style>
 	.uni-datetime-picker {
 		/* #ifndef APP-NVUE */
 		/* width: 100%; */
@@ -822,7 +804,7 @@
 
 	.uni-datetime-picker-btn-text {
 		font-size: 14px;
-		color: $uni-primary;
+		color: #007AFF;
 	}
 
 	.uni-datetime-picker-btn-group {
@@ -907,7 +889,6 @@
 
 	.uni-datetime-picker-text {
 		font-size: 14px;
-		line-height: 50px
 	}
 
 	.uni-datetime-picker-sign {

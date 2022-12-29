@@ -26,7 +26,8 @@
 		</view>
 		<view class="uni-pagination__num uni-pagination__num-flex-none">
 			<view class="uni-pagination__num-current">
-				<text class="uni-pagination__num-current-text is-pc-hide current-index-text">{{ currentIndex }}</text>
+				<text class="uni-pagination__num-current-text is-pc-hide"
+					style="color:#409EFF">{{ currentIndex }}</text>
 				<text class="uni-pagination__num-current-text is-pc-hide">/{{ maxPage || 0 }}</text>
 				<!-- #ifndef APP-NVUE -->
 				<view v-for="(item, index) in paper" :key="index" :class="{ 'page--active': item === currentIndex }"
@@ -309,7 +310,8 @@
 </script>
 
 <style lang="scss" scoped>
-	$uni-primary: #2979ff !default;
+	$uni-primary: #2979ff;
+
 	.uni-pagination {
 		/* #ifndef APP-NVUE */
 		display: flex;
@@ -402,10 +404,6 @@
 
 	.uni-pagination__num-current-text {
 		font-size: 15px;
-	}
-
-	.current-index-text{
-		color: $uni-primary;
 	}
 
 	.uni-pagination--enabled {
