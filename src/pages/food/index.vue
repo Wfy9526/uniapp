@@ -179,6 +179,9 @@ export default Vue.extend({
     },
     watch: {},
     async beforeMount() {
+        if (!uniCloud.getCurrentUserInfo().uid) {
+            return;
+        }
         this.menuDB = uniCloud.database().collection('food').where('user_id==$cloudEnv_uid');
         const res = await this.menuDB.get();
         const [data] = res.result.data;
