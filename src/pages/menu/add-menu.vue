@@ -112,13 +112,11 @@ export default Vue.extend({
             this.$refs.valiForm
                 .validate()
                 .then((validateRes) => {
-                    console.log(11111, validateRes);
                     const db = uniCloud.database();
                     db.collection('menu')
                         .where('user_id==$cloudEnv_uid')
                         .get()
                         .then((res) => {
-                            console.log(2222, res);
                             const [data] = res.result.data;
                             data[validateRes.selectMenuCategory].push({
                                 image: validateRes.imageValue[0].url,
