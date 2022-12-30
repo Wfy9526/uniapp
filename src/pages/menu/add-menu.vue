@@ -109,20 +109,39 @@ export default Vue.extend({
     computed: {},
     methods: {
         async addMenu() {
-            const validateRes = await this.$refs.valiForm.validate();
-            const db = uniCloud.database();
-            const res = await db.collection('menu').where('user_id==$cloudEnv_uid').get();
-            const [data] = res.result.data;
-            data[validateRes.selectMenuCategory].push({
-                image: validateRes.imageValue[0].url,
-                name: validateRes.menuName,
-                type: validateRes.selectMenuCategory,
-                remark: validateRes.batchingTable,
-            });
-            const updateData = {};
-            updateData[validateRes.selectMenuCategory] = data[validateRes.selectMenuCategory];
-            await db.collection('menu').where('user_id==$cloudEnv_uid').update(updateData);
-            uni.navigateBack();
+            this.$refs.valiForm
+                .validate()
+                .then((validateRes) => {
+                    console.log(11111, validateRes);
+                    const db = uniCloud.database();
+                    db.collection('menu')
+                        .where('user_id==$cloudEnv_uid')
+                        .get()
+                        .then((res) => {
+                            console.log(2222, res);
+                            const [data] = res.result.data;
+                            data[validateRes.selectMenuCategory].push({
+                                image: validateRes.imageValue[0].url,
+                                name: validateRes.menuName,
+                                type: validateRes.selectMenuCategory,
+                                remark: validateRes.batchingTable,
+                            });
+                            const updateData = {};
+                            updateData[validateRes.selectMenuCategory] =
+                                data[validateRes.selectMenuCategory];
+                            db.collection('menu')
+                                .where('user_id==$cloudEnv_uid')
+                                .update(updateData)
+                                .then(() => {
+                                    uni.navigateBack();
+                                });
+                        });
+                })
+                .catch((err) => {
+                    // 表单校验验失败，err 为具体错误信息
+                    // 其他逻辑处理
+                    // ...
+                });
         },
         addTag(type) {
             this.formData.selectMenuCategory = type;
