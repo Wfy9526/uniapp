@@ -298,16 +298,19 @@ export default Vue.extend({
             }
         },
         trigger(e) {
-            this.content.forEach((_, i) => {
-                if (i !== e.index) {
-                    _.active = false;
-                }
+            this.content.forEach((_) => {
+                _.active = false;
             });
-            this.content[e.index].active = !e.item.active;
+            this.content[e.index].active = true;
             this.selectFoodType = e.item.type;
             this.$refs.popup.open('top');
         },
         async popupChange(e) {
+            if (!e.show) {
+                this.content.forEach((_) => {
+                    _.active = false;
+                });
+            }
             if (!e.show && this.selectMenuCategory.length) {
                 if (!this.tabsContentsData[this.selectDay]) {
                     this.tabsContentsData[this.selectDay] = {
