@@ -10,7 +10,7 @@
 		</view>
 		<view v-else class="uni-dialog-content">
 			<slot>
-				<input class="uni-dialog-input" v-model="val" type="text" :placeholder="placeholderText" :focus="focus" >
+				<input class="uni-dialog-input" v-model="val" type="text" :placeholder="placeholderText" >
 			</slot>
 		</view>
 		<view class="uni-dialog-button-group">
