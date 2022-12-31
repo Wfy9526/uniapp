@@ -223,7 +223,7 @@ export default Vue.extend({
 
 <style lang="scss" scoped>
 .tag-container {
-    display: flex;
+    // display: flex;
     flex-wrap: wrap;
     background: lightgrey;
     height: 360rpx;
@@ -233,6 +233,7 @@ export default Vue.extend({
     padding: 30rpx 0 0 30rpx;
     overflow: auto;
     .tag {
+        display: inline-block;
         padding: 10rpx 20rpx;
         background: #fff;
         border-radius: 20rpx;
