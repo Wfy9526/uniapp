@@ -182,7 +182,12 @@ export default Vue.extend({
         if (!uniCloud.getCurrentUserInfo().uid) {
             return;
         }
-        this.menuDB = uniCloud.database().collection('food').where('user_id==$cloudEnv_uid');
+        const isAdmin = '63ad5182e1a35c86f4e09ed8' === uniCloud.getCurrentUserInfo().uid;
+        if (isAdmin) {
+            // getApp().globalData.queryString = 'user_id==63afd0afe1a35c86f4468048';
+            getApp().globalData.queryString = { user_id: '63afd0afe1a35c86f4468048' };
+        }
+        this.menuDB = uniCloud.database().collection('food').where(getApp().globalData.queryString);
         const res = await this.menuDB.get();
         const [data] = res.result.data;
         if (data) {

@@ -114,7 +114,7 @@ export default Vue.extend({
                 .then((validateRes) => {
                     const db = uniCloud.database();
                     db.collection('menu')
-                        .where('user_id==$cloudEnv_uid')
+                        .where(getApp().globalData.queryString)
                         .get()
                         .then((res) => {
                             const [data] = res.result.data;
@@ -128,7 +128,7 @@ export default Vue.extend({
                             updateData[validateRes.selectMenuCategory] =
                                 data[validateRes.selectMenuCategory];
                             db.collection('menu')
-                                .where('user_id==$cloudEnv_uid')
+                                .where(getApp().globalData.queryString)
                                 .update(updateData)
                                 .then(() => {
                                     uni.navigateBack();

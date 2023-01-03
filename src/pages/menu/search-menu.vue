@@ -57,7 +57,7 @@ export default {
         const db = uniCloud.database();
         const res = await db
             .collection('menu')
-            .where('user_id==$cloudEnv_uid')
+            .where(getApp().globalData.queryString)
             .field(options.type)
             .get();
         const [data] = res.result.data;

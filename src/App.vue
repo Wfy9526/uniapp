@@ -2,6 +2,7 @@
 import uniIdPageInit from '@/uni_modules/uni-id-pages/init.js';
 export default {
     globalData: {
+        queryString: 'user_id==$cloudEnv_uid',
         menuCategory: {},
         uniFabPattern: {
             color: '#7A7E83',

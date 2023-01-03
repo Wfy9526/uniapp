@@ -246,7 +246,7 @@ export default Vue.extend({
             await uniCloud
                 .database()
                 .collection('calendar')
-                .where('user_id==$cloudEnv_uid')
+                .where(getApp().globalData.queryString)
                 .update(updateData);
         },
 
@@ -254,7 +254,7 @@ export default Vue.extend({
             const menuData = await uniCloud
                 .database()
                 .collection('menu')
-                .where('user_id==$cloudEnv_uid')
+                .where(getApp().globalData.queryString)
                 .get();
             const [data] = menuData.result.data;
             if (data) {
@@ -265,7 +265,7 @@ export default Vue.extend({
             const menuData = await uniCloud
                 .database()
                 .collection('calendar')
-                .where('user_id==$cloudEnv_uid')
+                .where(getApp().globalData.queryString)
                 .get();
             const [data] = menuData.result.data;
             if (data) {
@@ -341,7 +341,7 @@ export default Vue.extend({
                 await uniCloud
                     .database()
                     .collection('calendar')
-                    .where('user_id==$cloudEnv_uid')
+                    .where(getApp().globalData.queryString)
                     .update(updateData);
             }
         },

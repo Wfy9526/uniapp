@@ -81,7 +81,7 @@ export default Vue.extend({
                         const db = uniCloud.database();
                         await db
                             .collection('menu')
-                            .where('user_id==$cloudEnv_uid')
+                            .where(getApp().globalData.queryString)
                             .update(updateData);
                     } else if (res.cancel) {
                         console.log('用户点击取消');
@@ -109,7 +109,7 @@ export default Vue.extend({
     // 页面周期函数--监听页面显示(not-nvue)
     async onShow() {
         const db = uniCloud.database();
-        const res = await db.collection('menu').where('user_id==$cloudEnv_uid').get();
+        const res = await db.collection('menu').where(getApp().globalData.queryString).get();
         const [data] = res.result.data;
 
         if (data) {
