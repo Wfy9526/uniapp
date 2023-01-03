@@ -303,7 +303,7 @@ export default Vue.extend({
             });
             this.content[e.index].active = true;
             this.selectFoodType = e.item.type;
-            this.$refs.popup.open('top');
+            this.$refs.popup.open('center');
         },
         async popupChange(e) {
             if (!e.show) {
@@ -438,6 +438,12 @@ export default Vue.extend({
         display: inline-block;
         margin-right: 10px;
         margin-bottom: 20rpx;
+    }
+    .uni-popup__wrapper {
+        width: 95%;
+        height: 75%;
+        overflow: auto;
+        border-radius: 15rpx;
     }
 }
 </style>
